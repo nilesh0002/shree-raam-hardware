@@ -251,6 +251,16 @@ app.get('/api/test', (req, res) => {
   res.json({ message: 'Server is working!' });
 });
 
+// Debug route to see all users
+app.get('/api/debug/users', async (req, res) => {
+  try {
+    const users = await User.find().select('-password');
+    res.json({ count: users.length, users });
+  } catch (error) {
+    res.json({ error: error.message, users: [] });
+  }
+});
+
 // Admin Authentication
 app.post('/api/admin/login', (req, res) => {
   const { username, password } = req.body;
@@ -271,6 +281,15 @@ app.get('/api/admin/orders', async (req, res) => {
   try {
     const orders = await Order.find().sort({ createdAt: -1 });
     res.json(orders);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api/users', async (req, res) => {
+  try {
+    const users = await User.find().select('-password').sort({ createdAt: -1 });
+    res.json(users);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

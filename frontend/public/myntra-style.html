@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🔨 Shree Raam Hardware Store</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: Whitney, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+      background: #f5f5f6;
+      color: #282c3f;
+      line-height: 1.42;
+      font-weight: 400;
+      font-size: 14px;
+    }
+    
+    /* Navigation - Myntra Style */
+    .navbar { 
+      background: #ffffff;
+      box-shadow: 0 4px 12px rgba(40,44,63,.1);
+      padding: 0 4%; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      position: sticky;
+      top: 0;
+      z-index: 1001;
+      height: 80px;
+      border-bottom: 1px solid #eaeaec;
+    }
+    .navbar h1 { 
+      font-size: 36px; 
+      font-weight: 700; 
+      color: #ff3f6c;
+      letter-spacing: -1.8px;
+      font-family: Whitney, sans-serif;
+    }
+    .nav-buttons { display: flex; gap: 40px; align-items: center; }
+    .nav-btn { 
+      background: transparent;
+      color: #282c3f; 
+      border: none;
+      padding: 28px 0; 
+      cursor: pointer; 
+      font-size: 14px;
+      font-weight: 700;
+      transition: all 0.2s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      position: relative;
+      font-family: Whitney, sans-serif;
+    }
+    .nav-btn:hover { color: #ff3f6c; }
+    .nav-btn:hover::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: #ff3f6c;
+    }
+    .admin-btn { 
+      background: #ff3f6c;
+      color: #ffffff;
+      padding: 10px 20px;
+      border-radius: 2px;
+      font-weight: 600;
+      font-size: 12px;
+    }
+    .admin-btn:hover {
+      background: #e91e63;
+      color: #ffffff;
+    }
+    .admin-btn:hover::after { display: none; }
+    #cart-count {
+      background: #ff3f6c;
+      color: white;
+      border-radius: 50%;
+      padding: 0;
+      font-size: 10px;
+      font-weight: 700;
+      margin-left: 4px;
+      min-width: 18px;
+      height: 18px;
+      text-align: center;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: -8px;
+      right: -8px;
+    }
+    
+    /* Layout */
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+    .section { background: transparent; margin: 0; padding: 20px 0; }
+    .hidden { display: none; }
+    
+    .section-header { text-align: left; margin-bottom: 30px; }
+    .section-header h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #282c3f;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    /* Hero */
+    .hero { 
+      background: linear-gradient(45deg, #ff3f6c 0%, #ff6b35 100%); 
+      color: white; 
+      text-align: center; 
+      padding: 60px 40px; 
+      border-radius: 0; 
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero h2 { font-size: 48px; margin-bottom: 16px; font-weight: 700; letter-spacing: -1px; position: relative; z-index: 1; }
+    .hero p { font-size: 18px; opacity: 0.9; font-weight: 400; position: relative; z-index: 1; }
+    
+    /* Search */
+    .search-section { margin-bottom: 30px; }
+    .search-bar { 
+      width: 100%; 
+      padding: 12px 16px; 
+      border: 1px solid #d4d5d9;
+      border-radius: 4px; 
+      font-size: 14px; 
+      background: #ffffff;
+      color: #282c3f;
+      transition: all 0.2s ease;
+      font-family: Whitney, sans-serif;
+    }
+    .search-bar:focus {
+      outline: none;
+      border-color: #ff3f6c;
+      box-shadow: 0 0 4px rgba(255, 63, 108, 0.3);
+    }
+    .search-bar::placeholder {
+      color: #94969f;
+      font-weight: 400;
+    }
+    
+    /* Filters */
+    .filters-section { display: flex; justify-content: space-between; margin-bottom: 20px; align-items: center; }
+    .category-filter { display: flex; background: #ffffff; border-radius: 0; padding: 0; box-shadow: none; border: 1px solid #d4d5d9; }
+    .filter-btn { 
+      background: transparent; 
+      border: none; 
+      border-right: 1px solid #d4d5d9;
+      padding: 12px 20px; 
+      cursor: pointer; 
+      font-size: 12px;
+      color: #282c3f;
+      transition: all 0.2s ease;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-family: Whitney, sans-serif;
+    }
+    .filter-btn:last-child { border-right: none; }
+    .filter-btn.active { 
+      background: #ff3f6c; 
+      color: #ffffff; 
+    }
+    .filter-btn:hover {
+      background: #f8f8f8;
+      color: #ff3f6c;
+    }
+    .filter-btn.active:hover {
+      background: #e91e63;
+      color: #ffffff;
+    }
+    
+    /* Sort Select */
+    .sort-select {
+      padding: 12px 40px 12px 16px;
+      border: 1px solid #d4d5d9;
+      border-radius: 4px;
+      background: #ffffff;
+      color: #282c3f;
+      font-family: Whitney, sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      appearance: none;
+      background-image: url('data:image/svg+xml;utf8,<svg fill="%23282c3f" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+    }
+    .sort-select:hover {
+      border-color: #ff3f6c;
+    }
+    .sort-select:focus {
+      outline: none;
+      border-color: #ff3f6c;
+      box-shadow: 0 0 4px rgba(255, 63, 108, 0.3);
+    }
+    
+    /* Products */
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 20px; }
+    .product-card { 
+      background: #ffffff;
+      border-radius: 0;
+      overflow: hidden;
+      transition: all 0.2s ease;
+      border: 1px solid #f5f5f6;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+      cursor: pointer;
+      position: relative;
+    }
+    .product-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+    
+    .product-image {
+      position: relative;
+      height: 280px;
+      background: #f5f5f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .product-icon { font-size: 60px; opacity: 0.6; color: #94969f; }
+    .product-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 4px 8px;
+      border-radius: 2px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-family: Whitney, sans-serif;
+    }
+    .product-badge.in-stock { background: #03a685; color: white; }
+    .product-badge.low-stock { background: #ff905a; color: white; }
+    .wishlist-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.8);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .wishlist-btn:hover {
+      background: #ff3f6c;
+      color: white;
+    }
+    
+    .product-info { padding: 12px; }
+    .product-card h3 { font-size: 16px; margin-bottom: 6px; color: #282c3f; font-weight: 700; line-height: 1.2; font-family: Whitney, sans-serif; }
+    .product-card .category { color: #94969f; font-size: 12px; margin-bottom: 4px; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
+    .product-card .description { color: #535766; margin-bottom: 8px; font-size: 12px; line-height: 1.3; }
+    .product-rating { display: flex; gap: 6px; margin-bottom: 8px; align-items: center; }
+    .stars { color: #ff905a; font-size: 12px; }
+    .rating-text { color: #94969f; font-size: 10px; font-weight: 400; }
+    .price { font-size: 14px; font-weight: 700; color: #282c3f; margin-bottom: 4px; }
+    .stock { color: #03a685; font-size: 10px; margin-bottom: 8px; font-weight: 400; }
+    .low-stock { color: #ff905a; }
+    
+    /* Buttons */
+    .btn { 
+      background: #ff3f6c; 
+      color: white; 
+      border: none; 
+      padding: 10px 16px; 
+      border-radius: 2px; 
+      cursor: pointer; 
+      font-size: 12px; 
+      font-weight: 600;
+      transition: all 0.2s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-family: Whitney, sans-serif;
+    }
+    .btn:hover { 
+      background: #e91e63;
+    }
+    .btn-secondary { background: #ffffff; color: #ff3f6c; border: 1px solid #ff3f6c; }
+    .btn-secondary:hover { background: #fff0f3; }
+    .btn-danger { background: #ff6b6b; }
+    .btn-full { width: 100%; }
+    
+    /* Quantity Controls */
+    .quantity-controls { display: flex; align-items: center; gap: 8px; margin: 8px 0; justify-content: center; }
+    .quantity-btn { 
+      background: #f5f5f6;
+      color: #282c3f;
+      border: 1px solid #d4d5d9; 
+      width: 28px; 
+      height: 28px; 
+      border-radius: 2px; 
+      cursor: pointer; 
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.2s ease;
+      font-family: Whitney, sans-serif;
+    }
+    .quantity-btn:hover {
+      background: #ff3f6c;
+      color: white;
+      border-color: #ff3f6c;
+    }
+    .quantity-input { 
+      width: 40px; 
+      text-align: center; 
+      border: 1px solid #d4d5d9;
+      border-radius: 2px; 
+      padding: 4px;
+      background: #ffffff;
+      font-size: 12px;
+      font-weight: 400;
+      font-family: Whitney, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <h1>🔨 MYNTRA HARDWARE</h1>
+    <div class="nav-buttons">
+      <button class="nav-btn">HOME</button>
+      <button class="nav-btn">CART <span id="cart-count">3</span></button>
+      <button class="nav-btn">WISHLIST</button>
+      <button class="nav-btn">ACCOUNT</button>
+      <button class="nav-btn">SIGN IN</button>
+      <button class="nav-btn admin-btn">ADMIN</button>
+    </div>
+  </nav>
+
+  <div class="container">
+    <!-- Hero Section -->
+    <div class="hero">
+      <h2>HARDWARE STORE</h2>
+      <p>Premium tools and construction materials with professional service.</p>
+    </div>
+    
+    <!-- Search -->
+    <div class="search-section">
+      <input type="text" class="search-bar" placeholder="Search for products, brands and more">
+    </div>
+    
+    <!-- Filters -->
+    <div class="filters-section">
+      <div class="category-filter">
+        <button class="filter-btn active">ALL</button>
+        <button class="filter-btn">TOOLS</button>
+        <button class="filter-btn">POWER TOOLS</button>
+        <button class="filter-btn">PAINTING</button>
+        <button class="filter-btn">CONSTRUCTION</button>
+      </div>
+      
+      <select class="sort-select">
+        <option>Sort by: Relevance</option>
+        <option>Price: Low to High</option>
+        <option>Price: High to Low</option>
+        <option>Customer Rating</option>
+      </select>
+    </div>
+    
+    <!-- Products Grid -->
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-image">
+          <div class="product-badge in-stock">IN STOCK</div>
+          <button class="wishlist-btn">🤍</button>
+          <div class="product-icon">🔨</div>
+        </div>
+        <div class="product-info">
+          <h3>Professional Hammer</h3>
+          <p class="category">TOOLS</p>
+          <p class="description">Heavy-duty steel hammer with ergonomic grip</p>
+          <div class="product-rating">
+            <span class="stars">★★★★★</span>
+            <span class="rating-text">4.8 (124)</span>
+          </div>
+          <div class="price">₹250</div>
+          <p class="stock">50 available</p>
+          <div class="quantity-controls">
+            <button class="quantity-btn">-</button>
+            <input type="number" class="quantity-input" value="1">
+            <button class="quantity-btn">+</button>
+          </div>
+          <button class="btn btn-full">ADD TO CART</button>
+        </div>
+      </div>
+      
+      <div class="product-card">
+        <div class="product-image">
+          <div class="product-badge low-stock">LOW STOCK</div>
+          <button class="wishlist-btn">❤️</button>
+          <div class="product-icon">⚡</div>
+        </div>
+        <div class="product-info">
+          <h3>Electric Drill Machine</h3>
+          <p class="category">POWER TOOLS</p>
+          <p class="description">High-power 800W electric drill with bits</p>
+          <div class="product-rating">
+            <span class="stars">★★★★★</span>
+            <span class="rating-text">4.9 (156)</span>
+          </div>
+          <div class="price">₹2,500</div>
+          <p class="stock low-stock">15 available</p>
+          <div class="quantity-controls">
+            <button class="quantity-btn">-</button>
+            <input type="number" class="quantity-input" value="1">
+            <button class="quantity-btn">+</button>
+          </div>
+          <button class="btn btn-full">ADD TO CART</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
