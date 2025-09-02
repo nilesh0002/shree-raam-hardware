@@ -1105,13 +1105,13 @@
     ];
 
     // Global state
-    let cart = [];
-    let currentUser = null;
-    let isAdmin = false;
-    let orders = [];
-    let customers = [];
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+    let isAdmin = JSON.parse(localStorage.getItem('isAdmin')) || false;
+    let orders = JSON.parse(localStorage.getItem('orders')) || [];
+    let customers = JSON.parse(localStorage.getItem('customers')) || [];
     let filteredProducts = [...products];
-    let wishlist = [];
+    let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
 
     // Product functions
     function loadProducts() {
@@ -1222,11 +1222,13 @@
         showNotification(`${product.name} added to cart! 🛒`, 'success');
       }
       
+      localStorage.setItem('cart', JSON.stringify(cart));
       updateCartDisplay();
     }
 
     function removeFromCart(productId) {
       cart = cart.filter(item => item._id !== productId);
+      localStorage.setItem('cart', JSON.stringify(cart));
       updateCartDisplay();
       showNotification('Item removed from cart', 'info');
     }
@@ -1235,6 +1237,7 @@
       const item = cart.find(item => item._id === productId);
       if (item && newQuantity > 0) {
         item.quantity = newQuantity;
+        localStorage.setItem('cart', JSON.stringify(cart));
         updateCartDisplay();
       }
     }
@@ -1242,6 +1245,7 @@
     function clearCart() {
       if (confirm('Clear your cart?')) {
         cart = [];
+        localStorage.setItem('cart', JSON.stringify(cart));
         updateCartDisplay();
         showNotification('Cart cleared', 'info');
       }
@@ -1533,6 +1537,7 @@
         showNotification(`${product.name} added to wishlist`, 'success');
       }
       
+      localStorage.setItem('wishlist', JSON.stringify(wishlist));
       loadProducts();
     }
 
@@ -1596,6 +1601,7 @@
 
     function adminLogout() {
       isAdmin = false;
+      localStorage.removeItem('isAdmin');
       showSection('home');
       showNotification('Admin logged out', 'info');
     }
@@ -1652,6 +1658,10 @@
     function logout() {
       currentUser = null;
       wishlist = [];
+      isAdmin = false;
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('wishlist');
+      localStorage.removeItem('isAdmin');
       updateUserInterface();
       showSection('home');
       showNotification('Signed out successfully', 'info');
@@ -1692,8 +1702,11 @@
           customers.push({ name, phone, email: '', orderCount: 1, joinDate: new Date().toISOString() });
         }
         
+        localStorage.setItem('orders', JSON.stringify(orders));
+        localStorage.setItem('customers', JSON.stringify(customers));
         showNotification(`Order placed! Order ID: ${order.id}`, 'success');
         cart = [];
+        localStorage.setItem('cart', JSON.stringify(cart));
         updateCartDisplay();
         showSection('home');
       });
@@ -1714,8 +1727,10 @@
           currentUser = user;
           if (!customers.find(c => c.phone === phone)) {
             customers.push({...user, orderCount: 0, joinDate: new Date().toISOString()});
+            localStorage.setItem('customers', JSON.stringify(customers));
           }
           
+          localStorage.setItem('currentUser', JSON.stringify(currentUser));
           updateUserInterface();
           showNotification(`Welcome back, ${user.name || 'User'}! 🎉`, 'success');
           showSection('home');
@@ -1744,6 +1759,8 @@
           customers.push(newUser);
           currentUser = newUser;
           
+          localStorage.setItem('customers', JSON.stringify(customers));
+          localStorage.setItem('currentUser', JSON.stringify(currentUser));
           updateUserInterface();
           showNotification(`Welcome ${name}! Account created successfully 🎉`, 'success');
           showSection('home');
@@ -1762,6 +1779,7 @@
         
         if (username === 'admin' && password === 'shree@123') {
           isAdmin = true;
+          localStorage.setItem('isAdmin', JSON.stringify(isAdmin));
           updateAdminStats();
           showSection('admin-dashboard');
           showNotification('Admin login successful', 'success');
