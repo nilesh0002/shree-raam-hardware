@@ -3,13 +3,49 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Shree Raam Hardware - Your trusted online hardware store for tools, construction materials, and more!" />
-  <meta name="keywords" content="hardware, tools, construction, cement, steel, drill, hammer, paint" />
-  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-  <title>🔨 Shree Raam Hardware - Online Store</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <title>🔨 Shree Raam Hardware Store</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+    .header { text-align: center; margin-bottom: 30px; }
+    .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .product { border: 1px solid #ddd; padding: 20px; border-radius: 8px; background: #f9f9f9; }
+    .btn { background: #007cba; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+    .loading { text-align: center; padding: 50px; }
+  </style>
 </head>
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <div class="header">
+      <h1>🔨 Shree Raam Hardware Store</h1>
+      <p>Loading products...</p>
+    </div>
+    <div id="products" class="products"></div>
+  </div>
+
+  <script>
+    async function loadProducts() {
+      try {
+        const response = await fetch('https://srmhardwarestore-git-main-nileshs-projects-ad1a54cb.vercel.app/api/products');
+        const products = await response.json();
+        
+        document.querySelector('.header p').textContent = `Welcome to our hardware store! (${products.length} products)`;
+        
+        const productsDiv = document.getElementById('products');
+        productsDiv.innerHTML = products.map(product => `
+          <div class="product">
+            <h3>${product.name}</h3>
+            <p><strong>Category:</strong> ${product.category}</p>
+            <p><strong>Price:</strong> ₹${product.price}</p>
+            <p><strong>Stock:</strong> ${product.stock} units</p>
+            <button class="btn">Add to Cart</button>
+          </div>
+        `).join('');
+      } catch (error) {
+        document.querySelector('.header p').innerHTML = `<span style="color: red;">Error loading products: ${error.message}</span>`;
+      }
+    }
+    
+    loadProducts();
+  </script>
 </body>
 </html>
