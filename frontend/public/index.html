@@ -1590,41 +1590,80 @@
     // Admin functions
     function loadOrders() {
       const ordersList = document.getElementById('orders-list');
-      if (orders.length === 0) {
-        ordersList.innerHTML = '<div class="empty-state"><h3>No orders yet</h3></div>';
+      const validOrders = orders.filter(order => order.status !== 'Cancelled' && order.customerName && order.phone);
+      
+      if (validOrders.length === 0) {
+        ordersList.innerHTML = '<div class="empty-state"><h3>No valid orders yet</h3></div>';
         return;
       }
       
-      ordersList.innerHTML = orders.map(order => `
+      ordersList.innerHTML = validOrders.map(order => `
         <div class="order-item">
           <div class="order-header">
             <div>
               <div class="order-id">Order #${order.id}</div>
               <div class="order-customer">${order.customerName} - ${order.phone}</div>
+              <div class="order-date">${new Date(order.date).toLocaleDateString()}</div>
             </div>
-            <span class="order-status status-${order.status.toLowerCase()}">${order.status}</span>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-end;">
+              <span class="order-status status-${order.status.toLowerCase()}">${order.status}</span>
+              <select onchange="updateOrderStatus('${order.id}', this.value)" style="padding: 0.25rem; border-radius: 4px; border: 1px solid #e0e0e0;">
+                <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                <option value="Confirmed" ${order.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+                <option value="Shipped" ${order.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+              </select>
+            </div>
           </div>
-          <p>Items: ${order.items.map(item => `${item.name} (${item.quantity})`).join(', ')}</p>
-          <p>Total: ₹${order.total.toLocaleString()}</p>
+          <p><strong>Items:</strong> ${order.items.map(item => `${item.name} (${item.quantity})`).join(', ')}</p>
+          <p><strong>Total:</strong> ₹${order.total.toLocaleString()}</p>
+          <p><strong>Address:</strong> ${order.address}</p>
+          <button class="btn btn-secondary btn-sm" onclick="viewCustomerDetails('${order.phone}')">View Customer</button>
         </div>
       `).join('');
     }
 
     function loadCustomers() {
       const customersList = document.getElementById('customers-list');
-      if (customers.length === 0) {
+      const validCustomers = customers.filter(customer => customer.name && customer.phone);
+      
+      if (validCustomers.length === 0) {
         customersList.innerHTML = '<div class="empty-state"><h3>No customers yet</h3></div>';
         return;
       }
       
-      customersList.innerHTML = customers.map(customer => `
-        <div class="order-item">
-          <h4>${customer.name}</h4>
-          <p>Phone: ${customer.phone}</p>
-          <p>Email: ${customer.email}</p>
-          <p>Orders: ${customer.orderCount || 0}</p>
-        </div>
-      `).join('');
+      customersList.innerHTML = validCustomers.map(customer => {
+        const customerOrders = orders.filter(order => order.phone === customer.phone);
+        const totalSpent = customerOrders.reduce((sum, order) => sum + order.total, 0);
+        
+        return `
+          <div class="order-item">
+            <div class="order-header">
+              <div>
+                <h4>${customer.name}</h4>
+                <p><strong>Phone:</strong> ${customer.phone}</p>
+                <p><strong>Email:</strong> ${customer.email || 'Not provided'}</p>
+                <p><strong>Member Since:</strong> ${new Date(customer.joinDate).toLocaleDateString()}</p>
+              </div>
+              <div style="text-align: right;">
+                <div class="stat-number" style="font-size: 1.25rem; color: #2874f0;">${customerOrders.length}</div>
+                <div class="stat-label">Orders</div>
+                <div class="stat-number" style="font-size: 1rem; color: #388e3c;">₹${totalSpent.toLocaleString()}</div>
+                <div class="stat-label">Total Spent</div>
+              </div>
+            </div>
+            <div style="margin-top: 1rem;">
+              <strong>Recent Orders:</strong>
+              ${customerOrders.slice(-3).map(order => `
+                <div style="background: #f5f5f5; padding: 0.5rem; margin: 0.25rem 0; border-radius: 4px; font-size: 0.8125rem;">
+                  Order #${order.id} - ${order.status} - ₹${order.total.toLocaleString()}
+                </div>
+              `).join('')}
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="viewCustomerOrders('${customer.phone}')">View All Orders</button>
+          </div>
+        `;
+      }).join('');
     }
 
     function loadProductsManagement() {
@@ -1645,6 +1684,64 @@
       document.getElementById('total-customers').textContent = customers.length;
     }
 
+    function updateOrderStatus(orderId, newStatus) {
+      const order = orders.find(o => o.id === orderId);
+      if (order) {
+        order.status = newStatus;
+        localStorage.setItem('orders', JSON.stringify(orders));
+        loadOrders();
+        showNotification(`Order #${orderId} status updated to ${newStatus}`, 'success');
+      }
+    }
+    
+    function viewCustomerDetails(phone) {
+      const customer = customers.find(c => c.phone === phone);
+      const customerOrders = orders.filter(order => order.phone === phone);
+      
+      if (customer) {
+        const details = `
+          Customer: ${customer.name}
+          Phone: ${customer.phone}
+          Email: ${customer.email || 'Not provided'}
+          Total Orders: ${customerOrders.length}
+          Total Spent: ₹${customerOrders.reduce((sum, order) => sum + order.total, 0).toLocaleString()}
+          
+          Recent Orders:
+          ${customerOrders.slice(-5).map(order => `• Order #${order.id} - ${order.status} - ₹${order.total.toLocaleString()}`).join('\n')}
+        `;
+        alert(details);
+      }
+    }
+    
+    function viewCustomerOrders(phone) {
+      const customerOrders = orders.filter(order => order.phone === phone);
+      showSection('admin-dashboard');
+      showAdminTab('orders');
+      
+      // Filter orders list to show only this customer's orders
+      const ordersList = document.getElementById('orders-list');
+      ordersList.innerHTML = `
+        <div style="margin-bottom: 1rem;">
+          <button class="btn btn-secondary" onclick="loadOrders()">← Back to All Orders</button>
+        </div>
+        ${customerOrders.map(order => `
+          <div class="order-item">
+            <div class="order-header">
+              <div>
+                <div class="order-id">Order #${order.id}</div>
+                <div class="order-customer">${order.customerName} - ${order.phone}</div>
+                <div class="order-date">${new Date(order.date).toLocaleDateString()}</div>
+              </div>
+              <span class="order-status status-${order.status.toLowerCase()}">${order.status}</span>
+            </div>
+            <p><strong>Items:</strong> ${order.items.map(item => `${item.name} (${item.quantity})`).join(', ')}</p>
+            <p><strong>Total:</strong> ₹${order.total.toLocaleString()}</p>
+            <p><strong>Address:</strong> ${order.address}</p>
+          </div>
+        `).join('')}
+      `;
+    }
+    
     function adminLogout() {
       isAdmin = false;
       localStorage.removeItem('isAdmin');
