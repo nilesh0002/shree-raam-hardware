@@ -1106,7 +1106,9 @@
         <div class="tab" onclick="showAdminTab('products')">Products</div>
       </div>
 
-      <button class="btn btn-danger" onclick="adminLogout()">Logout</button>
+      <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+        <button class="btn btn-danger" onclick="adminLogout()" style="background: linear-gradient(135deg, #ff6161, #e55555); padding: 0.75rem 1.5rem; border-radius: 6px; box-shadow: 0 2px 8px rgba(255, 97, 97, 0.3);">🚪 Admin Logout</button>
+      </div>
 
       <div id="admin-orders">
         <div id="orders-list"></div>
@@ -1728,7 +1730,7 @@
       const ordersList = document.getElementById('orders-list');
       ordersList.innerHTML = `
         <div style="margin-bottom: 1rem;">
-          <button class="btn btn-secondary" onclick="loadOrders()">← Back to All Orders</button>
+          <button class="btn" onclick="loadOrders()" style="background: linear-gradient(135deg, #2874f0, #1e5bc6); color: white; padding: 0.75rem 1.5rem; border-radius: 6px; box-shadow: 0 2px 8px rgba(40, 116, 240, 0.3); font-weight: 600;">← Back to All Orders</button>
         </div>
         ${customerOrders.map(order => `
           <div class="order-item">
@@ -1943,26 +1945,30 @@
         }
       });
 
-      // Add demo data
+      // Add demo data only if no existing data
       setTimeout(() => {
-        customers.push(
-          { name: 'John Doe', phone: '9876543210', email: 'john@example.com', orderCount: 1, joinDate: '2024-01-15' },
-          { name: 'Jane Smith', phone: '9876543211', email: 'jane@example.com', orderCount: 1, joinDate: '2024-02-01' }
-        );
-        
-        orders.push(
-          {
-            id: 'ORD1704067200000',
-            customerName: 'John Doe',
-            phone: '9876543210',
-            address: '123 Main St',
-            items: [{name: 'Professional Hammer', quantity: 2, price: 250}],
-            total: 550,
-            status: 'Delivered',
-            date: '2024-01-15T10:00:00.000Z'
-          }
-        );
-        
+        if (customers.length === 0 && orders.length === 0) {
+          customers.push(
+            { name: 'John Doe', phone: '9876543210', email: 'john@example.com', orderCount: 1, joinDate: '2024-01-15' },
+            { name: 'Jane Smith', phone: '9876543211', email: 'jane@example.com', orderCount: 1, joinDate: '2024-02-01' }
+          );
+          
+          orders.push(
+            {
+              id: 'ORD1704067200000',
+              customerName: 'John Doe',
+              phone: '9876543210',
+              address: '123 Main St',
+              items: [{name: 'Professional Hammer', quantity: 2, price: 250}],
+              total: 550,
+              status: 'Delivered',
+              date: '2024-01-15T10:00:00.000Z'
+            }
+          );
+          
+          localStorage.setItem('customers', JSON.stringify(customers));
+          localStorage.setItem('orders', JSON.stringify(orders));
+        }
         updateAdminStats();
       }, 1000);
     });
