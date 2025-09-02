@@ -1481,6 +1481,7 @@
         const order = orders.find(o => o.id === orderId);
         if (order) {
           order.status = 'Cancelled';
+          localStorage.setItem('orders', JSON.stringify(orders));
           loadUserOrders();
           showNotification('Order cancelled successfully', 'info');
         }
@@ -1494,6 +1495,15 @@
       if (address && label) {
         if (!currentUser.addresses) currentUser.addresses = [];
         currentUser.addresses.push({ address, label });
+        
+        // Update in customers array and localStorage
+        const customerIndex = customers.findIndex(c => c.phone === currentUser.phone);
+        if (customerIndex !== -1) {
+          customers[customerIndex] = currentUser;
+        }
+        localStorage.setItem('customers', JSON.stringify(customers));
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        
         loadUserAddresses();
         showNotification('Address added successfully', 'success');
       }
@@ -1502,6 +1512,15 @@
     function removeAddress(index) {
       if (confirm('Remove this address?')) {
         currentUser.addresses.splice(index, 1);
+        
+        // Update in customers array and localStorage
+        const customerIndex = customers.findIndex(c => c.phone === currentUser.phone);
+        if (customerIndex !== -1) {
+          customers[customerIndex] = currentUser;
+        }
+        localStorage.setItem('customers', JSON.stringify(customers));
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        
         loadUserAddresses();
         showNotification('Address removed', 'info');
       }
