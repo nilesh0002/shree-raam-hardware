@@ -36,39 +36,50 @@
     }
     .nav-buttons { display: flex; gap: 0.25rem; }
     .nav-btn { 
-      background: rgba(0, 122, 255, 0.1);
+      background: linear-gradient(135deg, rgba(0, 122, 255, 0.1), rgba(88, 86, 214, 0.1));
       color: #007aff; 
-      border: none; 
+      border: 1px solid rgba(0, 122, 255, 0.2);
       padding: 0.5rem 0.75rem; 
       cursor: pointer; 
       font-size: 0.8125rem;
-      font-weight: 500;
+      font-weight: 600;
       transition: all 0.2s ease;
-      border-radius: 6px;
+      border-radius: 12px;
       position: relative;
+      box-shadow: 0 2px 8px rgba(0, 122, 255, 0.1);
     }
     .nav-btn:hover { 
-      background: rgba(0, 122, 255, 0.15);
-      transform: translateY(-1px);
+      background: linear-gradient(135deg, rgba(0, 122, 255, 0.2), rgba(88, 86, 214, 0.2));
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0, 122, 255, 0.2);
+      border-color: #007aff;
     }
     .nav-btn:active { transform: translateY(0); }
     .admin-btn { 
-      background: rgba(255, 59, 48, 0.1);
+      background: linear-gradient(135deg, rgba(255, 59, 48, 0.1), rgba(255, 107, 90, 0.1));
       color: #ff3b30;
+      border-color: rgba(255, 59, 48, 0.2);
     }
     .admin-btn:hover {
-      background: rgba(255, 59, 48, 0.15);
+      background: linear-gradient(135deg, rgba(255, 59, 48, 0.2), rgba(255, 107, 90, 0.2));
+      border-color: #ff3b30;
     }
     #cart-count {
-      background: #ff3b30;
+      background: linear-gradient(135deg, #ff3b30, #ff6b5a);
       color: white;
-      border-radius: 10px;
-      padding: 0.125rem 0.375rem;
+      border-radius: 12px;
+      padding: 0.25rem 0.5rem;
       font-size: 0.6875rem;
-      font-weight: 600;
+      font-weight: 700;
       margin-left: 0.25rem;
-      min-width: 18px;
+      min-width: 20px;
       text-align: center;
+      box-shadow: 0 2px 8px rgba(255, 59, 48, 0.3);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
     }
     
     /* Layout */
@@ -300,9 +311,41 @@
     }
     
     /* Empty States */
-    .empty-state { text-align: center; padding: 3rem 1rem; }
-    .empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.3; }
-    .empty-state h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .empty-state { 
+      text-align: center; 
+      padding: 3rem 1rem;
+      background: linear-gradient(135deg, #f8f9fa, #ffffff);
+      border-radius: 16px;
+      border: 1px solid rgba(0, 122, 255, 0.1);
+    }
+    .empty-icon { 
+      font-size: 4rem; 
+      margin-bottom: 1rem; 
+      opacity: 0.4;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-10px); }
+      60% { transform: translateY(-5px); }
+    }
+    .empty-state h3 { 
+      font-size: 1.5rem; 
+      margin-bottom: 0.5rem;
+      color: #1d1d1f;
+      font-weight: 600;
+    }
+    .empty-state p {
+      color: #86868b;
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+    }
+    .empty-state .btn {
+      background: linear-gradient(135deg, #007aff, #5856d6);
+      box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
+      padding: 0.875rem 2rem;
+      font-size: 1rem;
+    }
     
     /* Admin */
     .admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
