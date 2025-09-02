@@ -1180,8 +1180,8 @@
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
     let isAdmin = JSON.parse(localStorage.getItem('isAdmin')) || false;
-    let orders = JSON.parse(localStorage.getItem('orders')) || [];
-    let customers = JSON.parse(localStorage.getItem('customers')) || [];
+    let orders = [];
+    let customers = [];
     let filteredProducts = [...products];
     let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
 
@@ -1636,42 +1636,25 @@
 
     // Load admin data from backend only
     async function loadAdminData() {
-      console.log('Loading admin data from backend...');
-      
-      // Clear any existing local data first
-      localStorage.removeItem('orders');
-      localStorage.removeItem('customers');
       orders = [];
       customers = [];
       
       try {
-        // Fetch orders from backend
-        console.log('Fetching orders from:', `${API_BASE}/api/orders`);
-        const ordersResponse = await fetch(`${API_BASE}/api/orders`);
+        const [ordersResponse, usersResponse] = await Promise.all([
+          fetch(`${API_BASE}/api/orders`),
+          fetch(`${API_BASE}/api/users`)
+        ]);
+        
         if (ordersResponse.ok) {
-          const backendOrders = await ordersResponse.json();
-          console.log('Backend orders:', backendOrders);
-          orders = backendOrders;
-        } else {
-          console.log('Orders fetch failed:', ordersResponse.status);
+          orders = await ordersResponse.json();
         }
         
-        // Fetch users from backend
-        console.log('Fetching users from:', `${API_BASE}/api/users`);
-        const usersResponse = await fetch(`${API_BASE}/api/users`);
         if (usersResponse.ok) {
-          const backendUsers = await usersResponse.json();
-          console.log('Backend users:', backendUsers);
-          customers = backendUsers;
-        } else {
-          console.log('Users fetch failed:', usersResponse.status);
+          customers = await usersResponse.json();
         }
       } catch (error) {
-        console.log('Backend error:', error.message);
+        console.error('Backend error:', error);
       }
-      
-      console.log('Final orders:', orders);
-      console.log('Final customers:', customers);
       
       updateAdminStats();
       loadOrders();
@@ -1923,25 +1906,22 @@
         const delivery = subtotal > 1000 ? 0 : 50;
         const total = subtotal + delivery;
         
-        const order = {
-          id: 'ORD' + Date.now(),
-          customerName: name,
-          phone: phone,
-          address: address,
-          items: [...cart],
-          total: total,
-          status: 'Pending',
-          date: new Date().toISOString()
-        };
-        
-        orders.push(order);
-        
-        if (!customers.find(c => c.phone === phone)) {
-          customers.push({ name, phone, email: '', orderCount: 1, joinDate: new Date().toISOString() });
+        // Send order to backend
+        try {
+          await fetch(`${API_BASE}/api/orders`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              customerName: name,
+              phone: phone,
+              address: address,
+              items: cart,
+              total: total
+            })
+          });
+        } catch (error) {
+          console.error('Order submission failed:', error);
         }
-        
-        localStorage.setItem('orders', JSON.stringify(orders));
-        localStorage.setItem('customers', JSON.stringify(customers));
         showNotification(`Order placed! Order ID: ${order.id}`, 'success');
         cart = [];
         localStorage.setItem('cart', JSON.stringify(cart));
@@ -1960,23 +1940,31 @@
         submitBtn.textContent = 'Signing in...';
         submitBtn.disabled = true;
         
-        setTimeout(() => {
-          const user = customers.find(c => c.phone === phone) || { name: 'User', phone, email: '' };
-          currentUser = user;
-          if (!customers.find(c => c.phone === phone)) {
-            customers.push({...user, orderCount: 0, joinDate: new Date().toISOString()});
-            localStorage.setItem('customers', JSON.stringify(customers));
+        // Try backend login first
+        fetch(`${API_BASE}/api/user/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone, password: document.getElementById('login-password').value })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            currentUser = data.user;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            updateUserInterface();
+            showNotification(`Welcome back, ${data.user.name}! 🎉`, 'success');
+            showSection('home');
+          } else {
+            showNotification('Invalid credentials', 'error');
           }
-          
-          localStorage.setItem('currentUser', JSON.stringify(currentUser));
-          updateUserInterface();
-          showNotification(`Welcome back, ${user.name || 'User'}! 🎉`, 'success');
-          showSection('home');
-          
-          // Reset button
+        })
+        .catch(() => {
+          showNotification('Login failed', 'error');
+        })
+        .finally(() => {
           submitBtn.textContent = originalText;
           submitBtn.disabled = false;
-        }, 1000);
+        });
       });
 
       // Register form
@@ -1992,21 +1980,31 @@
         submitBtn.textContent = 'Creating Account...';
         submitBtn.disabled = true;
         
-        setTimeout(() => {
-          const newUser = { name, phone, email, orderCount: 0, joinDate: new Date().toISOString() };
-          customers.push(newUser);
-          currentUser = newUser;
-          
-          localStorage.setItem('customers', JSON.stringify(customers));
-          localStorage.setItem('currentUser', JSON.stringify(currentUser));
-          updateUserInterface();
-          showNotification(`Welcome ${name}! Account created successfully 🎉`, 'success');
-          showSection('home');
-          
-          // Reset button
+        // Register with backend
+        fetch(`${API_BASE}/api/user/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, phone, email, password: document.getElementById('register-password').value })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            currentUser = data.user;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            updateUserInterface();
+            showNotification(`Welcome ${name}! Account created successfully 🎉`, 'success');
+            showSection('home');
+          } else {
+            showNotification(data.error || 'Registration failed', 'error');
+          }
+        })
+        .catch(() => {
+          showNotification('Registration failed', 'error');
+        })
+        .finally(() => {
           submitBtn.textContent = originalText;
           submitBtn.disabled = false;
-        }, 1200);
+        });
       });
 
       // Admin login form
@@ -2015,21 +2013,26 @@
         const username = document.getElementById('admin-username').value;
         const password = document.getElementById('admin-password').value;
         
-        if (username === 'admin' && password === 'shree@123') {
-          // Clear all cached data
-          localStorage.removeItem('orders');
-          localStorage.removeItem('customers');
-          orders = [];
-          customers = [];
-          
-          isAdmin = true;
-          localStorage.setItem('isAdmin', JSON.stringify(isAdmin));
-          showSection('admin-dashboard');
-          loadAdminData();
-          showNotification('Admin login successful', 'success');
-        } else {
-          showNotification('Invalid credentials', 'error');
-        }
+        fetch(`${API_BASE}/api/admin/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            isAdmin = true;
+            localStorage.setItem('isAdmin', JSON.stringify(isAdmin));
+            showSection('admin-dashboard');
+            loadAdminData();
+            showNotification('Admin login successful', 'success');
+          } else {
+            showNotification('Invalid credentials', 'error');
+          }
+        })
+        .catch(() => {
+          showNotification('Admin login failed', 'error');
+        });
       });
     });
   </script>
