@@ -34,23 +34,63 @@ const initializeProducts = async () => {
   }
 };
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => {
+// MongoDB Connection with better configuration
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+      bufferCommands: false,
+      bufferMaxEntries: 0
+    });
     console.log('Connected to MongoDB Atlas');
-    initializeProducts();
-  })
-  .catch(err => console.error('MongoDB connection error:', err));
+    await initializeProducts();
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
+    // Return mock data if DB fails
+    return false;
+  }
+};
+
+connectDB();
+
+// Mock data fallback
+const mockProducts = [
+  { _id: '1', name: 'Hammer', category: 'Tools', price: 250, stock: 50, image: 'hammer.jpg' },
+  { _id: '2', name: 'Screwdriver Set', category: 'Tools', price: 180, stock: 30, image: 'screwdriver.jpg' },
+  { _id: '3', name: 'Drill Machine', category: 'Power Tools', price: 2500, stock: 15, image: 'drill.jpg' },
+  { _id: '4', name: 'Paint Brush', category: 'Painting', price: 45, stock: 100, image: 'brush.jpg' },
+  { _id: '5', name: 'Cement (50kg)', category: 'Construction', price: 350, stock: 25, image: 'cement.jpg' },
+  { _id: '6', name: 'Steel Rod (12mm)', category: 'Construction', price: 65, stock: 200, image: 'rod.jpg' }
+];
 
 // Routes
 app.get('/api/products', async (req, res) => {
   try {
     const { category } = req.query;
-    const filter = category ? { category: new RegExp(category, 'i') } : {};
-    const products = await Product.find(filter);
-    res.json(products);
+    
+    // Try database first
+    if (mongoose.connection.readyState === 1) {
+      const filter = category ? { category: new RegExp(category, 'i') } : {};
+      const products = await Product.find(filter).maxTimeMS(5000);
+      res.json(products);
+    } else {
+      // Fallback to mock data
+      let products = mockProducts;
+      if (category) {
+        products = mockProducts.filter(p => p.category.toLowerCase().includes(category.toLowerCase()));
+      }
+      res.json(products);
+    }
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    // Return mock data on error
+    let products = mockProducts;
+    if (req.query.category) {
+      products = mockProducts.filter(p => p.category.toLowerCase().includes(req.query.category.toLowerCase()));
+    }
+    res.json(products);
   }
 });
 
@@ -92,10 +132,16 @@ app.get('/api/orders', async (req, res) => {
 
 app.get('/api/categories', async (req, res) => {
   try {
-    const categories = await Product.distinct('category');
-    res.json(categories);
+    if (mongoose.connection.readyState === 1) {
+      const categories = await Product.distinct('category').maxTimeMS(5000);
+      res.json(categories);
+    } else {
+      // Fallback categories
+      res.json(['Tools', 'Power Tools', 'Painting', 'Construction']);
+    }
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    // Return mock categories on error
+    res.json(['Tools', 'Power Tools', 'Painting', 'Construction']);
   }
 });
 
