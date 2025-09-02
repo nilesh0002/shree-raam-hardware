@@ -4,7 +4,7 @@ const config = {
     API_URL: 'http://localhost:5000'
   },
   production: {
-    API_URL: '' // Same domain for Vercel full-stack deployment
+    API_URL: 'https://srmhardwarestore-git-main-nileshs-projects-ad1a54cb.vercel.app'
   }
 };
 
