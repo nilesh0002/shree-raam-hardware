@@ -1,0 +1,5 @@
+frontend/
+backend/
+public/
+*.md
+push-to-github.bat
