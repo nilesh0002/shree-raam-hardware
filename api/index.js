@@ -1,18 +1,4 @@
-const mongoose = require('mongoose');
-
-// Product Schema
-const productSchema = new mongoose.Schema({
-  name: String,
-  category: String,
-  price: Number,
-  stock: Number,
-  image: String
-}, { timestamps: true });
-
-let Product;
-
-export default async function handler(req, res) {
-  // Set CORS headers
+export default function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -21,20 +7,22 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
   
-  // Connect to MongoDB
-  if (!mongoose.connections[0].readyState) {
-    await mongoose.connect('mongodb+srv://nilesh:nilesh%40123@cluster0.mongodb.net/hardware-store?retryWrites=true&w=majority');
-    Product = mongoose.model('Product', productSchema);
+  const products = [
+    { _id: '1', name: 'Hammer', category: 'Tools', price: 250, stock: 50 },
+    { _id: '2', name: 'Screwdriver Set', category: 'Tools', price: 180, stock: 30 },
+    { _id: '3', name: 'Drill Machine', category: 'Power Tools', price: 2500, stock: 15 },
+    { _id: '4', name: 'Paint Brush', category: 'Painting', price: 45, stock: 100 },
+    { _id: '5', name: 'Cement (50kg)', category: 'Construction', price: 350, stock: 25 },
+    { _id: '6', name: 'Steel Rod (12mm)', category: 'Construction', price: 65, stock: 200 }
+  ];
+  
+  if (req.url === '/api/products') {
+    return res.json(products);
   }
   
-  if (req.url === '/api/products' && req.method === 'GET') {
-    try {
-      const products = await Product.find();
-      return res.json(products);
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
-    }
+  if (req.url === '/api/test') {
+    return res.json({ message: 'API working!', timestamp: new Date().toISOString() });
   }
   
-  return res.json({ message: 'Hardware Store API' });
+  return res.json({ message: 'Shree Raam Hardware API' });
 }

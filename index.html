@@ -105,22 +105,25 @@
     async function loadProducts() {
       try {
         const response = await fetch('/api/products');
-        const products = await response.json();
-        
-        const grid = document.querySelector('.products-grid');
-        grid.innerHTML = products.map(product => `
-          <div class="product-card">
-            <div class="product-image">${getIcon(product.category)}</div>
-            <div class="product-info">
-              <h3>${product.name}</h3>
-              <p class="category">${product.category}</p>
-              <div class="price">₹${product.price.toLocaleString()}</div>
-              <button class="btn">Add to Cart</button>
+        if (response.ok) {
+          const products = await response.json();
+          
+          const grid = document.querySelector('.products-grid');
+          grid.innerHTML = products.map(product => `
+            <div class="product-card">
+              <div class="product-image">${getIcon(product.category)}</div>
+              <div class="product-info">
+                <h3>${product.name}</h3>
+                <p class="category">${product.category}</p>
+                <div class="price">₹${product.price.toLocaleString()}</div>
+                <button class="btn">Add to Cart</button>
+              </div>
             </div>
-          </div>
-        `).join('');
+          `).join('');
+          return;
+        }
       } catch (error) {
-        console.log('Using static products');
+        console.log('Backend failed, using static products');
       }
     }
     
