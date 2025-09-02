@@ -3,24 +3,301 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>🔨 Shree Raam Hardware Store - Professional Tools & Construction Materials</title>
-  <meta name="description" content="Premium quality tools, construction materials, and hardware supplies. Fast delivery, competitive prices, and excellent customer service.">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <title>🔨 Shree Raam Hardware Store</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif; 
+      background: #f2f2f7;
+      color: #1d1d1f;
+      line-height: 1.47059;
+      font-weight: 400;
+    }
+    
+    /* Navigation - Apple Style */
+    .navbar { 
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 0.5px solid rgba(0,0,0,0.1);
+      padding: 0.75rem 2rem; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 52px;
+    }
+    .navbar h1 { 
+      font-size: 1.3rem; 
+      font-weight: 600; 
+      color: #1d1d1f;
+      letter-spacing: -0.022em;
+    }
+    .nav-buttons { display: flex; gap: 0; }
+    .nav-btn { 
+      background: none;
+      color: #0066cc; 
+      border: none; 
+      padding: 0.5rem 1rem; 
+      cursor: pointer; 
+      font-size: 0.875rem;
+      font-weight: 400;
+      transition: opacity 0.3s ease;
+      border-radius: 0;
+    }
+    .nav-btn:hover { opacity: 0.8; }
+    .admin-btn { color: #ff3b30; }
+    
+    /* Layout */
+    .container { max-width: 980px; margin: 0 auto; padding: 0 1rem; }
+    .section { background: transparent; margin: 0; padding: 2rem 0; }
+    .hidden { display: none; }
+    
+    .section-header { text-align: left; margin-bottom: 2rem; }
+    .section-header h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1d1d1f;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.025em;
+    }
+    
+    /* Hero */
+    .hero { 
+      background: linear-gradient(135deg, #007aff 0%, #5856d6 100%); 
+      color: white; 
+      text-align: center; 
+      padding: 4rem 2rem; 
+      border-radius: 18px; 
+      margin-bottom: 3rem;
+    }
+    .hero h2 { font-size: 3.5rem; margin-bottom: 1rem; font-weight: 700; }
+    .hero p { font-size: 1.25rem; opacity: 0.9; }
+    
+    /* Search */
+    .search-section { margin-bottom: 2rem; }
+    .search-bar { 
+      width: 100%; 
+      padding: 0.75rem 1rem; 
+      border: none;
+      border-radius: 10px; 
+      font-size: 1rem; 
+      background: rgba(142, 142, 147, 0.12);
+      color: #1d1d1f;
+    }
+    
+    /* Filters */
+    .filters-section { display: flex; justify-content: space-between; margin-bottom: 2rem; }
+    .category-filter { display: flex; background: rgba(142, 142, 147, 0.12); border-radius: 8px; padding: 2px; }
+    .filter-btn { 
+      background: transparent; 
+      border: none; 
+      padding: 0.5rem 1rem; 
+      border-radius: 6px; 
+      cursor: pointer; 
+      font-size: 0.875rem;
+      color: #1d1d1f;
+      transition: all 0.2s ease;
+    }
+    .filter-btn.active { background: #ffffff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); }
+    
+    /* Products */
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
+    .product-card { 
+      background: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 0.5px solid rgba(0, 0, 0, 0.04);
+    }
+    .product-card:hover { transform: scale(1.02); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); }
+    
+    .product-image {
+      position: relative;
+      height: 160px;
+      background: linear-gradient(135deg, #f6f6f6, #e5e5ea);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .product-icon { font-size: 3rem; opacity: 0.6; }
+    .product-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .product-badge.in-stock { background: #34c759; color: white; }
+    .product-badge.low-stock { background: #ff9500; color: white; }
+    .wishlist-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(255, 255, 255, 0.8);
+      border: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 14px;
+      cursor: pointer;
+    }
+    
+    .product-info { padding: 1rem; }
+    .product-card h3 { font-size: 1.125rem; margin-bottom: 0.25rem; color: #1d1d1f; font-weight: 600; }
+    .product-card .category { color: #86868b; font-size: 0.875rem; margin-bottom: 0.5rem; }
+    .product-card .description { color: #86868b; margin-bottom: 0.75rem; font-size: 0.875rem; }
+    .product-rating { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .stars { color: #ff9500; }
+    .rating-text { color: #86868b; font-size: 0.75rem; }
+    .price { font-size: 1.5rem; font-weight: 600; color: #1d1d1f; margin-bottom: 0.5rem; }
+    .stock { color: #34c759; font-size: 0.875rem; margin-bottom: 1rem; }
+    .low-stock { color: #ff9500; }
+    
+    /* Buttons */
+    .btn { 
+      background: #007aff; 
+      color: white; 
+      border: none; 
+      padding: 0.75rem 1.5rem; 
+      border-radius: 8px; 
+      cursor: pointer; 
+      font-size: 1rem; 
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .btn:hover { background: #0056b3; }
+    .btn-secondary { background: rgba(142, 142, 147, 0.12); color: #007aff; }
+    .btn-danger { background: #ff3b30; }
+    .btn-full { width: 100%; }
+    
+    /* Quantity Controls */
+    .quantity-controls { display: flex; align-items: center; gap: 0.75rem; margin: 0.75rem 0; justify-content: center; }
+    .quantity-btn { 
+      background: rgba(142, 142, 147, 0.12);
+      color: #007aff;
+      border: none; 
+      width: 32px; 
+      height: 32px; 
+      border-radius: 16px; 
+      cursor: pointer; 
+      font-weight: 600;
+    }
+    .quantity-input { 
+      width: 60px; 
+      text-align: center; 
+      border: none;
+      border-radius: 6px; 
+      padding: 0.5rem;
+      background: rgba(142, 142, 147, 0.12);
+    }
+    
+    /* Forms */
+    .form-group { margin: 1rem 0; }
+    .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #1d1d1f; }
+    .form-group input, .form-group textarea { 
+      width: 100%; 
+      padding: 0.75rem 1rem; 
+      border: none;
+      border-radius: 8px; 
+      background: rgba(142, 142, 147, 0.12);
+    }
+    
+    .form-section {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: #ffffff;
+      border-radius: 12px;
+    }
+    
+    /* Cart */
+    .cart-item { 
+      display: flex; 
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem; 
+      background: #ffffff;
+      margin: 0.5rem 0;
+      border-radius: 12px;
+    }
+    .cart-item-image {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #f6f6f6, #e5e5ea);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cart-item-details { flex: 1; }
+    .cart-total { background: #ffffff; padding: 1.5rem; border-radius: 12px; margin-top: 1rem; }
+    .summary-row { display: flex; justify-content: space-between; padding: 0.5rem 0; }
+    .total-row { font-weight: 600; border-top: 1px solid #eee; padding-top: 0.75rem; }
+    
+    /* Empty States */
+    .empty-state { text-align: center; padding: 3rem 1rem; }
+    .empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.3; }
+    .empty-state h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    
+    /* Admin */
+    .admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card { background: #ffffff; padding: 1.5rem; border-radius: 12px; text-align: center; }
+    .stat-number { font-size: 2rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .stat-label { font-size: 0.875rem; color: #86868b; }
+    
+    .order-item { background: #ffffff; padding: 1.5rem; margin: 0.75rem 0; border-radius: 12px; }
+    .order-header { display: flex; justify-content: space-between; margin-bottom: 1rem; }
+    .order-id { font-size: 1.125rem; font-weight: 600; }
+    .order-status { padding: 0.375rem 0.75rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
+    
+    /* Tabs */
+    .tabs { display: flex; background: rgba(142, 142, 147, 0.12); border-radius: 8px; padding: 2px; margin-bottom: 2rem; }
+    .tab { padding: 0.5rem 1rem; cursor: pointer; border-radius: 6px; flex: 1; text-align: center; }
+    .tab.active { background: #ffffff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); }
+    
+    /* Auth */
+    .auth-container { display: flex; justify-content: center; align-items: center; min-height: 60vh; }
+    .auth-card { background: #ffffff; padding: 2rem; border-radius: 12px; width: 100%; max-width: 400px; }
+    .auth-card h2 { text-align: center; margin-bottom: 0.5rem; font-size: 1.75rem; font-weight: 700; }
+    .auth-card p { text-align: center; color: #86868b; margin-bottom: 2rem; }
+    
+    /* Notifications */
+    .notification { 
+      position: fixed; 
+      top: 60px; 
+      right: 1rem; 
+      padding: 1rem 1.5rem; 
+      border-radius: 12px; 
+      z-index: 1001;
+      max-width: 320px;
+    }
+    .notification.success { background: rgba(52, 199, 89, 0.9); color: white; }
+    .notification.error { background: rgba(255, 59, 48, 0.9); color: white; }
+    .notification.info { background: rgba(0, 122, 255, 0.9); color: white; }
+    
+    /* Mobile */
+    @media (max-width: 768px) {
+      .navbar { padding: 0.5rem 1rem; }
+      .nav-btn { padding: 0.375rem 0.75rem; font-size: 0.8125rem; }
+      .hero h2 { font-size: 2.5rem; }
+      .products-grid { grid-template-columns: 1fr; }
+      .filters-section { flex-direction: column; gap: 1rem; }
+    }
+  </style>
 </head>
 <body>
   <!-- Navigation -->
   <nav class="navbar">
-    <h1>🔨 Shree Raam Hardware Store</h1>
+    <h1>🔨 Shree Raam Hardware</h1>
     <div class="nav-buttons">
-      <button class="nav-btn" onclick="showSection('home')">🏠 Home</button>
-      <button class="nav-btn" onclick="showSection('cart')">🛒 Cart (<span id="cart-count">0</span>)</button>
-      <button class="nav-btn" onclick="showSection('wishlist')" id="wishlist-btn">❤️ Wishlist</button>
-      <button class="nav-btn" onclick="showSection('account')" id="account-btn">👤 Account</button>
-      <button class="nav-btn" onclick="showSection('login')" id="login-btn">🔑 Login</button>
-      <button class="nav-btn admin-btn" onclick="showSection('admin-login')">🔐 Admin</button>
+      <button class="nav-btn" onclick="showSection('home')">Home</button>
+      <button class="nav-btn" onclick="showSection('cart')">Cart (<span id="cart-count">0</span>)</button>
+      <button class="nav-btn" onclick="showSection('wishlist')" id="wishlist-btn" style="display:none;">Wishlist</button>
+      <button class="nav-btn" onclick="showSection('account')" id="account-btn" style="display:none;">Account</button>
+      <button class="nav-btn" onclick="showSection('login')" id="login-btn">Sign In</button>
+      <button class="nav-btn admin-btn" onclick="showSection('admin-login')">Admin</button>
     </div>
   </nav>
 
@@ -28,290 +305,200 @@
     <!-- Home Section -->
     <div id="home" class="section">
       <div class="hero">
-        <h2>Welcome to Shree Raam Hardware Store</h2>
-        <p>Your trusted partner for premium tools, construction materials, and hardware supplies with professional service and competitive prices!</p>
+        <h2>Hardware Store</h2>
+        <p>Premium tools and construction materials with professional service.</p>
       </div>
       
       <div class="search-section">
-        <input type="text" class="search-bar" placeholder="🔍 Search for tools, materials, or products..." onkeyup="searchProducts(this.value)">
-        <div id="search-results" class="search-results"></div>
+        <input type="text" class="search-bar" placeholder="Search products..." onkeyup="searchProducts(this.value)">
       </div>
       
       <div class="filters-section">
         <div class="category-filter">
-          <button class="filter-btn active" onclick="filterByCategory('all')">All Products</button>
-          <button class="filter-btn" onclick="filterByCategory('Tools')">🔨 Hand Tools</button>
-          <button class="filter-btn" onclick="filterByCategory('Power Tools')">⚡ Power Tools</button>
-          <button class="filter-btn" onclick="filterByCategory('Painting')">🎨 Painting Supplies</button>
-          <button class="filter-btn" onclick="filterByCategory('Construction')">🏗️ Construction Materials</button>
+          <button class="filter-btn active" onclick="filterByCategory('all')">All</button>
+          <button class="filter-btn" onclick="filterByCategory('Tools')">Tools</button>
+          <button class="filter-btn" onclick="filterByCategory('Power Tools')">Power Tools</button>
+          <button class="filter-btn" onclick="filterByCategory('Painting')">Painting</button>
+          <button class="filter-btn" onclick="filterByCategory('Construction')">Construction</button>
         </div>
         
         <div class="sort-section">
-          <select id="sort-select" onchange="sortProducts(this.value)">
+          <select onchange="sortProducts(this.value)">
             <option value="">Sort by</option>
             <option value="price-low">Price: Low to High</option>
             <option value="price-high">Price: High to Low</option>
-            <option value="rating">Customer Rating</option>
-            <option value="name">Name A-Z</option>
+            <option value="rating">Rating</option>
+            <option value="name">Name</option>
           </select>
         </div>
       </div>
       
-      <div class="products-grid" id="products-grid"></div>
+      <div class="products-grid" id="products-grid">
+        <!-- Products will be loaded here -->
+      </div>
     </div>
 
     <!-- Cart Section -->
     <div id="cart" class="section hidden">
       <div class="section-header">
-        <h2>🛒 Shopping Cart</h2>
-        <p>Review your items before checkout</p>
+        <h2>Shopping Cart</h2>
       </div>
       <div id="cart-items"></div>
-      <div class="cart-total" id="cart-total">Total: ₹0</div>
+      <div class="cart-total" id="cart-total"></div>
       <div class="cart-actions">
-        <button class="btn" onclick="showSection('checkout')" id="checkout-btn" style="display:none;">Proceed to Checkout</button>
+        <button class="btn" onclick="showSection('checkout')" id="checkout-btn" style="display:none;">Checkout</button>
         <button class="btn btn-secondary" onclick="clearCart()">Clear Cart</button>
-        <button class="btn btn-warning" onclick="showSection('home')">Continue Shopping</button>
+        <button class="btn btn-secondary" onclick="showSection('home')">Continue Shopping</button>
       </div>
     </div>
 
-    <!-- Wishlist Section -->
+    <!-- Other sections remain the same but simplified for Apple style -->
     <div id="wishlist" class="section hidden">
       <div class="section-header">
-        <h2>❤️ My Wishlist</h2>
-        <p>Your favorite products saved for later</p>
+        <h2>Wishlist</h2>
       </div>
       <div id="wishlist-items"></div>
     </div>
 
-    <!-- Checkout Section -->
     <div id="checkout" class="section hidden">
       <div class="section-header">
-        <h2>📋 Checkout</h2>
-        <p>Complete your order details</p>
+        <h2>Checkout</h2>
       </div>
-      <div class="checkout-container">
-        <div class="checkout-form">
-          <div id="checkout-summary"></div>
-          <form id="checkout-form">
-            <div class="form-section">
-              <h3>Customer Information</h3>
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Full Name *</label>
-                  <input type="text" id="customer-name" required>
-                </div>
-                <div class="form-group">
-                  <label>Phone Number *</label>
-                  <input type="tel" id="customer-phone" required>
-                </div>
-              </div>
-              <div class="form-group">
-                <label>Email Address</label>
-                <input type="email" id="customer-email" placeholder="For order updates">
-              </div>
-            </div>
-            
-            <div class="form-section">
-              <h3>Delivery Information</h3>
-              <div class="form-group">
-                <label>Delivery Address *</label>
-                <textarea id="customer-address" rows="3" placeholder="Enter complete delivery address" required></textarea>
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Payment Method *</label>
-                  <select id="payment-method" required>
-                    <option value="cod">Cash on Delivery</option>
-                    <option value="online">Online Payment</option>
-                    <option value="upi">UPI Payment</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Delivery Time</label>
-                  <select id="delivery-time">
-                    <option value="standard">Standard (2-3 days)</option>
-                    <option value="express">Express (1-2 days) - ₹100 extra</option>
-                    <option value="same-day">Same Day - ₹200 extra</option>
-                  </select>
-                </div>
-              </div>
-              <div class="form-group">
-                <label>Special Instructions</label>
-                <textarea id="special-instructions" rows="2" placeholder="Any special delivery instructions or notes..."></textarea>
-              </div>
-            </div>
-            
-            <div class="checkout-actions">
-              <button type="submit" class="btn btn-success">Place Order</button>
-              <button type="button" class="btn btn-secondary" onclick="showSection('cart')">Back to Cart</button>
-            </div>
-          </form>
+      <div id="checkout-summary"></div>
+      <form id="checkout-form">
+        <div class="form-section">
+          <h3>Customer Information</h3>
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="customer-name" required>
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="customer-phone" required>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="customer-email">
+          </div>
+          <div class="form-group">
+            <label>Address</label>
+            <textarea id="customer-address" rows="3" required></textarea>
+          </div>
         </div>
-      </div>
+        <button type="submit" class="btn btn-full">Place Order</button>
+      </form>
     </div>
 
-    <!-- Account Section -->
     <div id="account" class="section hidden">
       <div class="section-header">
-        <h2>👤 My Account</h2>
-        <p>Manage your profile, orders, and preferences</p>
+        <h2>My Account</h2>
       </div>
       <div class="tabs">
         <div class="tab active" onclick="showAccountTab('profile')">Profile</div>
-        <div class="tab" onclick="showAccountTab('orders')">My Orders</div>
+        <div class="tab" onclick="showAccountTab('orders')">Orders</div>
         <div class="tab" onclick="showAccountTab('addresses')">Addresses</div>
-        <div class="tab" onclick="showAccountTab('wishlist')">Wishlist</div>
       </div>
-      
       <div id="account-profile">
-        <div class="user-profile">
-          <div class="profile-section">
-            <h3>Profile Information</h3>
-            <div id="user-info"></div>
-            <button class="btn" onclick="editProfile()">Edit Profile</button>
-          </div>
-          <div class="profile-section">
-            <h3>Account Statistics</h3>
-            <div id="user-stats"></div>
-          </div>
-        </div>
+        <div id="user-info"></div>
+        <div id="user-stats"></div>
       </div>
-      
-      <div id="account-orders" class="hidden">
-        <div class="orders-header">
-          <h3>📦 Order History</h3>
-          <p>Track and manage your orders</p>
-        </div>
-        <div id="user-orders"></div>
-      </div>
-      
-      <div id="account-addresses" class="hidden">
-        <div class="addresses-header">
-          <h3>📍 Saved Addresses</h3>
-          <button class="btn" onclick="addNewAddress()">Add New Address</button>
-        </div>
-        <div id="user-addresses"></div>
-      </div>
-      
-      <div id="account-wishlist" class="hidden">
-        <div class="wishlist-header">
-          <h3>❤️ My Wishlist</h3>
-          <p>Your favorite products</p>
-        </div>
-        <div id="user-wishlist-items"></div>
-      </div>
+      <div id="account-orders" class="hidden"></div>
+      <div id="account-addresses" class="hidden"></div>
     </div>
 
-    <!-- Login Section -->
     <div id="login" class="section hidden">
       <div class="auth-container">
         <div class="auth-card">
-          <h2>🔑 Welcome Back</h2>
-          <p>Sign in to your account</p>
+          <h2>Sign In</h2>
+          <p>Welcome back</p>
           <form id="login-form">
             <div class="form-group">
               <label>Phone Number</label>
-              <input type="tel" id="login-phone" placeholder="Enter your phone number" required>
+              <input type="tel" id="login-phone" required>
             </div>
             <div class="form-group">
               <label>Password</label>
-              <input type="password" id="login-password" placeholder="Enter your password" required>
+              <input type="password" id="login-password" required>
             </div>
             <button type="submit" class="btn btn-full">Sign In</button>
             <div class="auth-links">
-              <button type="button" class="link-btn" onclick="showSection('register')">Create New Account</button>
-              <button type="button" class="link-btn" onclick="forgotPassword()">Forgot Password?</button>
+              <button type="button" class="link-btn" onclick="showSection('register')">Create Account</button>
             </div>
           </form>
         </div>
       </div>
     </div>
 
-    <!-- Register Section -->
     <div id="register" class="section hidden">
       <div class="auth-container">
         <div class="auth-card">
-          <h2>📝 Create Account</h2>
-          <p>Join Shree Raam Hardware Store</p>
+          <h2>Create Account</h2>
+          <p>Join our store</p>
           <form id="register-form">
             <div class="form-group">
               <label>Full Name</label>
-              <input type="text" id="register-name" placeholder="Enter your full name" required>
+              <input type="text" id="register-name" required>
             </div>
             <div class="form-group">
               <label>Phone Number</label>
-              <input type="tel" id="register-phone" placeholder="Enter your phone number" required>
+              <input type="tel" id="register-phone" required>
             </div>
             <div class="form-group">
-              <label>Email Address</label>
-              <input type="email" id="register-email" placeholder="Enter your email" required>
+              <label>Email</label>
+              <input type="email" id="register-email" required>
             </div>
             <div class="form-group">
               <label>Password</label>
-              <input type="password" id="register-password" placeholder="Create a password" required>
-            </div>
-            <div class="form-group">
-              <label>Confirm Password</label>
-              <input type="password" id="register-confirm-password" placeholder="Confirm your password" required>
+              <input type="password" id="register-password" required>
             </div>
             <button type="submit" class="btn btn-full">Create Account</button>
             <div class="auth-links">
-              <button type="button" class="link-btn" onclick="showSection('login')">Already have an account?</button>
+              <button type="button" class="link-btn" onclick="showSection('login')">Sign In</button>
             </div>
           </form>
         </div>
       </div>
     </div>
 
-    <!-- Admin Login Section -->
     <div id="admin-login" class="section hidden">
       <div class="auth-container">
-        <div class="auth-card admin-card">
-          <h2>🔐 Admin Access</h2>
-          <p>Administrative Dashboard Login</p>
+        <div class="auth-card">
+          <h2>Admin Access</h2>
           <form id="admin-login-form">
             <div class="form-group">
               <label>Username</label>
-              <input type="text" id="admin-username" placeholder="Enter admin username" required>
+              <input type="text" id="admin-username" required>
             </div>
             <div class="form-group">
               <label>Password</label>
-              <input type="password" id="admin-password" placeholder="Enter admin password" required>
+              <input type="password" id="admin-password" required>
             </div>
             <button type="submit" class="btn btn-danger btn-full">Admin Login</button>
-            <div class="auth-links">
-              <button type="button" class="link-btn" onclick="showSection('home')">Back to Store</button>
-            </div>
           </form>
-          <div class="info-message" style="margin-top: 1rem;">
-            <strong>Demo Credentials:</strong><br>
-            Username: admin<br>
-            Password: shree@123
+          <div class="info-message">
+            <strong>Demo:</strong> admin / shree@123
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Admin Dashboard Section -->
     <div id="admin-dashboard" class="section hidden">
       <div class="section-header">
-        <h2>📊 Admin Dashboard</h2>
-        <p>Manage your store operations</p>
+        <h2>Admin Dashboard</h2>
       </div>
       
       <div class="admin-stats">
         <div class="stat-card">
           <div class="stat-number" id="total-orders">0</div>
-          <div class="stat-label">Total Orders</div>
+          <div class="stat-label">Orders</div>
         </div>
         <div class="stat-card">
           <div class="stat-number" id="total-revenue">₹0</div>
-          <div class="stat-label">Total Revenue</div>
+          <div class="stat-label">Revenue</div>
         </div>
         <div class="stat-card">
           <div class="stat-number" id="total-customers">0</div>
-          <div class="stat-label">Total Customers</div>
+          <div class="stat-label">Customers</div>
         </div>
         <div class="stat-card">
           <div class="stat-number">6</div>
@@ -320,96 +507,531 @@
       </div>
 
       <div class="tabs">
-        <div class="tab active" onclick="showAdminTab('orders')">📦 Orders</div>
-        <div class="tab" onclick="showAdminTab('customers')">👥 Customers</div>
-        <div class="tab" onclick="showAdminTab('products')">📦 Products</div>
-        <div class="tab" onclick="showAdminTab('analytics')">📈 Analytics</div>
+        <div class="tab active" onclick="showAdminTab('orders')">Orders</div>
+        <div class="tab" onclick="showAdminTab('customers')">Customers</div>
+        <div class="tab" onclick="showAdminTab('products')">Products</div>
       </div>
 
-      <div class="admin-actions">
-        <button class="btn btn-danger" onclick="adminLogout()">Logout</button>
-      </div>
+      <button class="btn btn-danger" onclick="adminLogout()">Logout</button>
 
-      <!-- Orders Management -->
       <div id="admin-orders">
-        <div class="admin-section-header">
-          <h3>📦 Order Management</h3>
-          <p>View and manage all customer orders</p>
-        </div>
         <div id="orders-list"></div>
       </div>
-
-      <!-- Customers List -->
       <div id="admin-customers" class="hidden">
-        <div class="admin-section-header">
-          <h3>👥 Customer Management</h3>
-          <p>View customer information and order history</p>
-        </div>
         <div id="customers-list"></div>
       </div>
-
-      <!-- Products Management -->
       <div id="admin-products" class="hidden">
-        <div class="admin-section-header">
-          <h3>📦 Product Management</h3>
-          <button class="btn" onclick="addNewProduct()">Add New Product</button>
-        </div>
         <div id="products-management"></div>
-      </div>
-
-      <!-- Analytics -->
-      <div id="admin-analytics" class="hidden">
-        <div class="admin-section-header">
-          <h3>📈 Sales Analytics</h3>
-          <p>Business insights and performance metrics</p>
-        </div>
-        <div id="analytics-content"></div>
       </div>
     </div>
   </div>
 
-  <script src="script.js"></script>
-  <script src="script2.js"></script>
   <script>
-    // Merge the two script files functionality
+    // Products data
+    const products = [
+      { _id: '1', name: 'Professional Hammer', category: 'Tools', price: 250, stock: 50, description: 'Heavy-duty steel hammer with ergonomic grip', rating: 4.8, reviews: 124 },
+      { _id: '2', name: 'Screwdriver Set Pro', category: 'Tools', price: 180, stock: 30, description: 'Complete 12-piece set with magnetic tips', rating: 4.6, reviews: 89 },
+      { _id: '3', name: 'Electric Drill Machine', category: 'Power Tools', price: 2500, stock: 15, description: 'High-power 800W electric drill with bits', rating: 4.9, reviews: 156 },
+      { _id: '4', name: 'Premium Paint Brush', category: 'Painting', price: 45, stock: 100, description: 'Professional synthetic bristle brush', rating: 4.4, reviews: 67 },
+      { _id: '5', name: 'Portland Cement 50kg', category: 'Construction', price: 350, stock: 25, description: 'Premium OPC 53 grade cement', rating: 4.7, reviews: 203 },
+      { _id: '6', name: 'Steel Rod TMT 12mm', category: 'Construction', price: 65, stock: 200, description: 'High-grade TMT steel rod', rating: 4.5, reviews: 178 }
+    ];
+
+    // Global state
+    let cart = [];
+    let currentUser = null;
+    let isAdmin = false;
+    let orders = [];
+    let customers = [];
+    let filteredProducts = [...products];
+    let wishlist = [];
+
+    // Product functions
+    function loadProducts() {
+      const grid = document.getElementById('products-grid');
+      if (!grid) return;
+      
+      grid.innerHTML = filteredProducts.map(product => `
+        <div class="product-card">
+          <div class="product-image">
+            <div class="product-badge ${product.stock < 20 ? 'low-stock' : 'in-stock'}">
+              ${product.stock < 20 ? 'Low Stock' : 'In Stock'}
+            </div>
+            <button class="wishlist-btn ${wishlist.includes(product._id) ? 'active' : ''}" 
+                    onclick="toggleWishlist('${product._id}')">
+              ${wishlist.includes(product._id) ? '❤️' : '🤍'}
+            </button>
+            <div class="product-icon">${getProductIcon(product.category)}</div>
+          </div>
+          <div class="product-info">
+            <h3>${product.name}</h3>
+            <p class="category">${product.category}</p>
+            <p class="description">${product.description}</p>
+            <div class="product-rating">
+              <span class="stars">${'★'.repeat(Math.floor(product.rating))}</span>
+              <span class="rating-text">${product.rating} (${product.reviews})</span>
+            </div>
+            <div class="price">₹${product.price.toLocaleString()}</div>
+            <p class="stock ${product.stock < 20 ? 'low-stock' : ''}">${product.stock} available</p>
+            <div class="quantity-controls">
+              <button class="quantity-btn" onclick="changeQuantity('${product._id}', -1)">-</button>
+              <input type="number" class="quantity-input" id="qty-${product._id}" value="1" min="1" max="${product.stock}">
+              <button class="quantity-btn" onclick="changeQuantity('${product._id}', 1)">+</button>
+            </div>
+            <div class="product-actions">
+              <button class="btn ${product.stock === 0 ? 'btn-disabled' : ''}" 
+                      onclick="addToCart('${product._id}')" 
+                      ${product.stock === 0 ? 'disabled' : ''}>
+                ${product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function getProductIcon(category) {
+      const icons = { 'Tools': '🔨', 'Power Tools': '⚡', 'Painting': '🎨', 'Construction': '🏗️' };
+      return icons[category] || '🔧';
+    }
+
+    function searchProducts(query) {
+      if (!query.trim()) {
+        filteredProducts = [...products];
+      } else {
+        filteredProducts = products.filter(product => 
+          product.name.toLowerCase().includes(query.toLowerCase()) ||
+          product.category.toLowerCase().includes(query.toLowerCase()) ||
+          product.description.toLowerCase().includes(query.toLowerCase())
+        );
+      }
+      loadProducts();
+    }
+
+    function filterByCategory(category) {
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      if (category === 'all') {
+        filteredProducts = [...products];
+      } else {
+        filteredProducts = products.filter(product => product.category === category);
+      }
+      loadProducts();
+    }
+
+    function sortProducts(sortBy) {
+      switch(sortBy) {
+        case 'price-low': filteredProducts.sort((a, b) => a.price - b.price); break;
+        case 'price-high': filteredProducts.sort((a, b) => b.price - a.price); break;
+        case 'rating': filteredProducts.sort((a, b) => b.rating - a.rating); break;
+        case 'name': filteredProducts.sort((a, b) => a.name.localeCompare(b.name)); break;
+        default: filteredProducts = [...products];
+      }
+      loadProducts();
+    }
+
+    function changeQuantity(productId, change) {
+      const input = document.getElementById(`qty-${productId}`);
+      if (!input) return;
+      const newValue = parseInt(input.value) + change;
+      const product = products.find(p => p._id === productId);
+      if (newValue >= 1 && newValue <= product.stock) {
+        input.value = newValue;
+      }
+    }
+
+    // Cart functions
+    function addToCart(productId) {
+      const product = products.find(p => p._id === productId);
+      const quantity = parseInt(document.getElementById(`qty-${productId}`).value) || 1;
+      const existingItem = cart.find(item => item._id === productId);
+      
+      if (existingItem) {
+        existingItem.quantity += quantity;
+      } else {
+        cart.push({...product, quantity});
+      }
+      
+      updateCartDisplay();
+      showNotification(`${product.name} added to cart!`, 'success');
+    }
+
+    function removeFromCart(productId) {
+      cart = cart.filter(item => item._id !== productId);
+      updateCartDisplay();
+      showNotification('Item removed from cart', 'info');
+    }
+
+    function updateCartQuantity(productId, newQuantity) {
+      const item = cart.find(item => item._id === productId);
+      if (item && newQuantity > 0) {
+        item.quantity = newQuantity;
+        updateCartDisplay();
+      }
+    }
+
+    function clearCart() {
+      if (confirm('Clear your cart?')) {
+        cart = [];
+        updateCartDisplay();
+        showNotification('Cart cleared', 'info');
+      }
+    }
+
+    function updateCartDisplay() {
+      const cartCount = document.getElementById('cart-count');
+      const cartItems = document.getElementById('cart-items');
+      const cartTotal = document.getElementById('cart-total');
+      const checkoutBtn = document.getElementById('checkout-btn');
+      
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      cartCount.textContent = totalItems;
+      
+      if (cart.length === 0) {
+        cartItems.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">🛒</div>
+            <h3>Your cart is empty</h3>
+            <p>Start shopping to add items!</p>
+            <button class="btn" onclick="showSection('home')">Continue Shopping</button>
+          </div>
+        `;
+        cartTotal.innerHTML = '';
+        checkoutBtn.style.display = 'none';
+      } else {
+        cartItems.innerHTML = cart.map(item => `
+          <div class="cart-item">
+            <div class="cart-item-image">
+              <span class="item-icon">${getProductIcon(item.category)}</span>
+            </div>
+            <div class="cart-item-details">
+              <h4>${item.name}</h4>
+              <p class="item-price">₹${item.price.toLocaleString()} each</p>
+              <div class="quantity-controls">
+                <button class="quantity-btn" onclick="updateCartQuantity('${item._id}', ${item.quantity - 1})">-</button>
+                <span class="quantity-display">${item.quantity}</span>
+                <button class="quantity-btn" onclick="updateCartQuantity('${item._id}', ${item.quantity + 1})">+</button>
+              </div>
+              <p class="item-subtotal">₹${(item.price * item.quantity).toLocaleString()}</p>
+            </div>
+            <button class="btn btn-danger btn-sm" onclick="removeFromCart('${item._id}')">Remove</button>
+          </div>
+        `).join('');
+        
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const delivery = subtotal > 1000 ? 0 : 50;
+        const total = subtotal + delivery;
+        
+        cartTotal.innerHTML = `
+          <div class="summary-row">
+            <span>Subtotal:</span>
+            <span>₹${subtotal.toLocaleString()}</span>
+          </div>
+          <div class="summary-row">
+            <span>Delivery:</span>
+            <span>${delivery === 0 ? 'FREE' : '₹' + delivery}</span>
+          </div>
+          <div class="summary-row total-row">
+            <span>Total:</span>
+            <span>₹${total.toLocaleString()}</span>
+          </div>
+        `;
+        checkoutBtn.style.display = 'block';
+      }
+      updateCheckoutSummary();
+    }
+
+    function updateCheckoutSummary() {
+      const summary = document.getElementById('checkout-summary');
+      if (!summary) return;
+      
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const delivery = subtotal > 1000 ? 0 : 50;
+      const total = subtotal + delivery;
+      
+      summary.innerHTML = `
+        <div class="form-section">
+          <h3>Order Summary</h3>
+          ${cart.map(item => `
+            <div class="summary-row">
+              <span>${item.name} × ${item.quantity}</span>
+              <span>₹${(item.price * item.quantity).toLocaleString()}</span>
+            </div>
+          `).join('')}
+          <div class="summary-row total-row">
+            <span>Total:</span>
+            <span>₹${total.toLocaleString()}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // Navigation functions
+    function showSection(sectionName) {
+      document.querySelectorAll('.section').forEach(section => section.classList.add('hidden'));
+      document.getElementById(sectionName).classList.remove('hidden');
+      
+      if (sectionName === 'account' && !currentUser) {
+        showSection('login');
+        showNotification('Please sign in first', 'error');
+        return;
+      }
+      
+      if (sectionName === 'wishlist' && !currentUser) {
+        showSection('login');
+        showNotification('Please sign in first', 'error');
+        return;
+      }
+    }
+
+    function showAccountTab(tabName) {
+      document.querySelectorAll('#account .tab').forEach(tab => tab.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      document.querySelectorAll('#account > div:not(.tabs):not(.section-header)').forEach(div => div.classList.add('hidden'));
+      document.getElementById(`account-${tabName}`).classList.remove('hidden');
+    }
+
+    function showAdminTab(tabName) {
+      document.querySelectorAll('#admin-dashboard .tab').forEach(tab => tab.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      document.querySelectorAll('#admin-dashboard > div:not(.tabs):not(.section-header):not(.admin-stats):not([onclick])').forEach(div => div.classList.add('hidden'));
+      document.getElementById(`admin-${tabName}`).classList.remove('hidden');
+      
+      if (tabName === 'orders') loadOrders();
+      if (tabName === 'customers') loadCustomers();
+      if (tabName === 'products') loadProductsManagement();
+    }
+
+    // Wishlist functions
+    function toggleWishlist(productId) {
+      if (!currentUser) {
+        showNotification('Please sign in first', 'error');
+        return;
+      }
+      
+      const index = wishlist.indexOf(productId);
+      const product = products.find(p => p._id === productId);
+      
+      if (index > -1) {
+        wishlist.splice(index, 1);
+        showNotification(`${product.name} removed from wishlist`, 'info');
+      } else {
+        wishlist.push(productId);
+        showNotification(`${product.name} added to wishlist`, 'success');
+      }
+      
+      loadProducts();
+    }
+
+    // Admin functions
+    function loadOrders() {
+      const ordersList = document.getElementById('orders-list');
+      if (orders.length === 0) {
+        ordersList.innerHTML = '<div class="empty-state"><h3>No orders yet</h3></div>';
+        return;
+      }
+      
+      ordersList.innerHTML = orders.map(order => `
+        <div class="order-item">
+          <div class="order-header">
+            <div>
+              <div class="order-id">Order #${order.id}</div>
+              <div class="order-customer">${order.customerName} - ${order.phone}</div>
+            </div>
+            <span class="order-status status-${order.status.toLowerCase()}">${order.status}</span>
+          </div>
+          <p>Items: ${order.items.map(item => `${item.name} (${item.quantity})`).join(', ')}</p>
+          <p>Total: ₹${order.total.toLocaleString()}</p>
+        </div>
+      `).join('');
+    }
+
+    function loadCustomers() {
+      const customersList = document.getElementById('customers-list');
+      if (customers.length === 0) {
+        customersList.innerHTML = '<div class="empty-state"><h3>No customers yet</h3></div>';
+        return;
+      }
+      
+      customersList.innerHTML = customers.map(customer => `
+        <div class="order-item">
+          <h4>${customer.name}</h4>
+          <p>Phone: ${customer.phone}</p>
+          <p>Email: ${customer.email}</p>
+          <p>Orders: ${customer.orderCount || 0}</p>
+        </div>
+      `).join('');
+    }
+
+    function loadProductsManagement() {
+      const productsDiv = document.getElementById('products-management');
+      productsDiv.innerHTML = products.map(product => `
+        <div class="order-item">
+          <h4>${product.name}</h4>
+          <p>Category: ${product.category}</p>
+          <p>Price: ₹${product.price.toLocaleString()}</p>
+          <p>Stock: ${product.stock} units</p>
+        </div>
+      `).join('');
+    }
+
+    function updateAdminStats() {
+      document.getElementById('total-orders').textContent = orders.length;
+      document.getElementById('total-revenue').textContent = '₹' + orders.reduce((sum, order) => sum + order.total, 0).toLocaleString();
+      document.getElementById('total-customers').textContent = customers.length;
+    }
+
+    function adminLogout() {
+      isAdmin = false;
+      showSection('home');
+      showNotification('Admin logged out', 'info');
+    }
+
+    // Utility functions
+    function showNotification(message, type = 'success') {
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => notification.remove(), 3000);
+    }
+
+    function updateUserInterface() {
+      const loginBtn = document.getElementById('login-btn');
+      const accountBtn = document.getElementById('account-btn');
+      const wishlistBtn = document.getElementById('wishlist-btn');
+      
+      if (currentUser) {
+        loginBtn.textContent = 'Sign Out';
+        loginBtn.onclick = () => logout();
+        accountBtn.style.display = 'inline-block';
+        wishlistBtn.style.display = 'inline-block';
+      } else {
+        loginBtn.textContent = 'Sign In';
+        loginBtn.onclick = () => showSection('login');
+        accountBtn.style.display = 'none';
+        wishlistBtn.style.display = 'none';
+      }
+    }
+
+    function logout() {
+      currentUser = null;
+      wishlist = [];
+      updateUserInterface();
+      showSection('home');
+      showNotification('Signed out successfully', 'info');
+    }
+
+    // Form handlers
     document.addEventListener('DOMContentLoaded', function() {
-      // Initialize the application
+      // Initialize
       loadProducts();
       updateCartDisplay();
       updateUserInterface();
-      loadCartFromStorage();
       
-      // Add demo data after a short delay
+      // Checkout form
+      document.getElementById('checkout-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = document.getElementById('customer-name').value;
+        const phone = document.getElementById('customer-phone').value;
+        const address = document.getElementById('customer-address').value;
+        
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const delivery = subtotal > 1000 ? 0 : 50;
+        const total = subtotal + delivery;
+        
+        const order = {
+          id: 'ORD' + Date.now(),
+          customerName: name,
+          phone: phone,
+          address: address,
+          items: [...cart],
+          total: total,
+          status: 'Pending',
+          date: new Date().toISOString()
+        };
+        
+        orders.push(order);
+        
+        if (!customers.find(c => c.phone === phone)) {
+          customers.push({ name, phone, email: '', orderCount: 1, joinDate: new Date().toISOString() });
+        }
+        
+        showNotification(`Order placed! Order ID: ${order.id}`, 'success');
+        cart = [];
+        updateCartDisplay();
+        showSection('home');
+      });
+
+      // Login form
+      document.getElementById('login-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const phone = document.getElementById('login-phone').value;
+        
+        const user = customers.find(c => c.phone === phone) || { name: 'User', phone, email: '' };
+        currentUser = user;
+        if (!customers.find(c => c.phone === phone)) {
+          customers.push({...user, orderCount: 0, joinDate: new Date().toISOString()});
+        }
+        
+        updateUserInterface();
+        showNotification(`Welcome back!`, 'success');
+        showSection('home');
+      });
+
+      // Register form
+      document.getElementById('register-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = document.getElementById('register-name').value;
+        const phone = document.getElementById('register-phone').value;
+        const email = document.getElementById('register-email').value;
+        
+        const newUser = { name, phone, email, orderCount: 0, joinDate: new Date().toISOString() };
+        customers.push(newUser);
+        currentUser = newUser;
+        
+        updateUserInterface();
+        showNotification(`Welcome ${name}!`, 'success');
+        showSection('home');
+      });
+
+      // Admin login form
+      document.getElementById('admin-login-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const username = document.getElementById('admin-username').value;
+        const password = document.getElementById('admin-password').value;
+        
+        if (username === 'admin' && password === 'shree@123') {
+          isAdmin = true;
+          updateAdminStats();
+          showSection('admin-dashboard');
+          showNotification('Admin login successful', 'success');
+        } else {
+          showNotification('Invalid credentials', 'error');
+        }
+      });
+
+      // Add demo data
       setTimeout(() => {
-        // Demo customers
         customers.push(
-          { name: 'John Doe', phone: '9876543210', email: 'john@example.com', orderCount: 2, joinDate: '2024-01-15', addresses: [] },
-          { name: 'Jane Smith', phone: '9876543211', email: 'jane@example.com', orderCount: 1, joinDate: '2024-02-01', addresses: [] }
+          { name: 'John Doe', phone: '9876543210', email: 'john@example.com', orderCount: 1, joinDate: '2024-01-15' },
+          { name: 'Jane Smith', phone: '9876543211', email: 'jane@example.com', orderCount: 1, joinDate: '2024-02-01' }
         );
         
-        // Demo orders
         orders.push(
           {
             id: 'ORD1704067200000',
             customerName: 'John Doe',
             phone: '9876543210',
-            address: '123 Main St, City',
+            address: '123 Main St',
             items: [{name: 'Professional Hammer', quantity: 2, price: 250}],
             total: 550,
             status: 'Delivered',
-            date: '2024-01-15T10:00:00.000Z',
-            paymentMethod: 'cod'
-          },
-          {
-            id: 'ORD1706745600000',
-            customerName: 'Jane Smith',
-            phone: '9876543211',
-            address: '456 Oak Ave, Town',
-            items: [{name: 'Electric Drill Machine', quantity: 1, price: 2500}],
-            total: 2500,
-            status: 'Shipped',
-            date: '2024-02-01T14:30:00.000Z',
-            paymentMethod: 'online'
+            date: '2024-01-15T10:00:00.000Z'
           }
         );
         
