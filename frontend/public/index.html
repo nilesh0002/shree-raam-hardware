@@ -16,8 +16,8 @@
     
     /* Navigation - Apple Style */
     .navbar { 
-      background: #2874f0;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+      background: linear-gradient(135deg, #2874f0, #1e5bc6);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
       padding: 0.5rem 1rem; 
       display: flex; 
       justify-content: space-between; 
@@ -35,22 +35,22 @@
     }
     .nav-buttons { display: flex; gap: 0.25rem; }
     .nav-btn { 
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.2);
       color: #ffffff; 
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.4);
       padding: 0.5rem 0.75rem; 
       cursor: pointer; 
       font-size: 0.8125rem;
       font-weight: 600;
       transition: all 0.2s ease;
-      border-radius: 4px;
+      border-radius: 6px;
       position: relative;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     .nav-btn:hover { 
-      background: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.3);
       transform: translateY(-1px);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
     }
     .nav-btn:active { transform: translateY(0); }
     .admin-btn { 
@@ -139,7 +139,11 @@
       transition: all 0.2s ease;
       font-weight: 500;
     }
-    .filter-btn.active { background: #2874f0; color: #ffffff; }
+    .filter-btn.active { 
+      background: linear-gradient(135deg, #2874f0, #1e5bc6); 
+      color: #ffffff; 
+      box-shadow: 0 2px 4px rgba(40, 116, 240, 0.3);
+    }
     
     /* Products */
     .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
@@ -198,11 +202,11 @@
     
     /* Buttons */
     .btn { 
-      background: #ff6161; 
+      background: linear-gradient(135deg, #ff6161, #e55555); 
       color: white; 
       border: none; 
       padding: 0.625rem 1rem; 
-      border-radius: 2px; 
+      border-radius: 4px; 
       cursor: pointer; 
       font-size: 0.875rem; 
       font-weight: 600;
@@ -210,8 +214,13 @@
       min-height: 36px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      box-shadow: 0 2px 4px rgba(255, 97, 97, 0.3);
     }
-    .btn:hover { background: #e55555; }
+    .btn:hover { 
+      background: linear-gradient(135deg, #e55555, #d44444);
+      transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(255, 97, 97, 0.4);
+    }
     .btn-secondary { background: #ffffff; color: #2874f0; border: 1px solid #2874f0; }
     .btn-danger { background: #ff3b30; }
     .btn-full { width: 100%; }
@@ -548,11 +557,11 @@
     
     /* Auth Buttons */
     .create-account-btn {
-      background: #ff6161;
+      background: linear-gradient(135deg, #4caf50, #388e3c);
       color: white;
       border: none;
       padding: 0.75rem 1.5rem;
-      border-radius: 2px;
+      border-radius: 4px;
       cursor: pointer;
       font-size: 0.875rem;
       font-weight: 600;
@@ -560,6 +569,12 @@
       width: 100%;
       margin-top: 0.5rem;
       text-transform: uppercase;
+      box-shadow: 0 2px 4px rgba(76, 175, 80, 0.3);
+    }
+    .create-account-btn:hover {
+      background: linear-gradient(135deg, #388e3c, #2e7d32);
+      transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(76, 175, 80, 0.4);
     }
     .create-account-btn:hover {
       transform: translateY(-1px);
