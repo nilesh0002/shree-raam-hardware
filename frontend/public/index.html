@@ -1740,14 +1740,52 @@
 
     function loadProductsManagement() {
       const productsDiv = document.getElementById('products-management');
-      productsDiv.innerHTML = products.map(product => `
-        <div class="order-item">
-          <h4>${product.name}</h4>
-          <p>Category: ${product.category}</p>
-          <p>Price: ₹${product.price.toLocaleString()}</p>
-          <p>Stock: ${product.stock} units</p>
+      productsDiv.innerHTML = `
+        <div style="margin-bottom: 2rem;">
+          <button class="btn" onclick="showAddProductForm()" style="background: #34c759;">+ Add New Product</button>
         </div>
-      `).join('');
+        <div id="add-product-form" class="hidden" style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
+          <h4>Add New Product</h4>
+          <form id="new-product-form">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;">
+              <input type="text" id="product-name" placeholder="Product Name" required>
+              <select id="product-category" required>
+                <option value="">Select Category</option>
+                <option value="Tools">Tools</option>
+                <option value="Power Tools">Power Tools</option>
+                <option value="Painting">Painting</option>
+                <option value="Construction">Construction</option>
+              </select>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;">
+              <input type="number" id="product-price" placeholder="Price" required>
+              <input type="number" id="product-stock" placeholder="Stock" required>
+            </div>
+            <textarea id="product-description" placeholder="Description" rows="2" style="width: 100%; margin: 1rem 0;"></textarea>
+            <div style="display: flex; gap: 1rem;">
+              <button type="submit" class="btn">Add Product</button>
+              <button type="button" class="btn btn-secondary" onclick="hideAddProductForm()">Cancel</button>
+            </div>
+          </form>
+        </div>
+        ${products.map(product => `
+          <div class="order-item">
+            <div style="display: flex; justify-content: space-between; align-items: start;">
+              <div>
+                <h4>${product.name}</h4>
+                <p>Category: ${product.category}</p>
+                <p>Price: ₹${product.price.toLocaleString()}</p>
+                <p>Stock: ${product.stock} units</p>
+                <p style="color: #666; font-size: 0.9rem;">${product.description || 'No description'}</p>
+              </div>
+              <div style="display: flex; gap: 0.5rem;">
+                <button class="btn btn-secondary btn-sm" onclick="editProduct('${product._id}')">Edit</button>
+                <button class="btn btn-danger btn-sm" onclick="deleteProduct('${product._id}')">Delete</button>
+              </div>
+            </div>
+          </div>
+        `).join('')}
+      `;
     }
 
     function updateAdminStats() {
@@ -1812,6 +1850,68 @@
           </div>
         `).join('')}
       `;
+    }
+    
+    function showAddProductForm() {
+      document.getElementById('add-product-form').classList.remove('hidden');
+    }
+    
+    function hideAddProductForm() {
+      document.getElementById('add-product-form').classList.add('hidden');
+      document.getElementById('new-product-form').reset();
+    }
+    
+    function addProduct(productData) {
+      const newProduct = {
+        _id: Date.now().toString(),
+        name: productData.name,
+        category: productData.category,
+        price: parseInt(productData.price),
+        stock: parseInt(productData.stock),
+        description: productData.description,
+        rating: 4.5,
+        reviews: 0
+      };
+      
+      products.push(newProduct);
+      filteredProducts = [...products];
+      loadProducts();
+      loadProductsManagement();
+      hideAddProductForm();
+      showNotification('Product added successfully', 'success');
+    }
+    
+    function editProduct(productId) {
+      const product = products.find(p => p._id === productId);
+      if (!product) return;
+      
+      const newName = prompt('Product Name:', product.name);
+      const newPrice = prompt('Price:', product.price);
+      const newStock = prompt('Stock:', product.stock);
+      
+      if (newName && newPrice && newStock) {
+        product.name = newName;
+        product.price = parseInt(newPrice);
+        product.stock = parseInt(newStock);
+        
+        filteredProducts = [...products];
+        loadProducts();
+        loadProductsManagement();
+        showNotification('Product updated successfully', 'success');
+      }
+    }
+    
+    function deleteProduct(productId) {
+      if (confirm('Delete this product?')) {
+        const index = products.findIndex(p => p._id === productId);
+        if (index > -1) {
+          products.splice(index, 1);
+          filteredProducts = [...products];
+          loadProducts();
+          loadProductsManagement();
+          showNotification('Product deleted successfully', 'info');
+        }
+      }
     }
     
     function adminLogout() {
@@ -2033,6 +2133,19 @@
         .catch(() => {
           showNotification('Admin login failed', 'error');
         });
+      });
+      
+      // Add product form
+      document.getElementById('new-product-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const productData = {
+          name: document.getElementById('product-name').value,
+          category: document.getElementById('product-category').value,
+          price: document.getElementById('product-price').value,
+          stock: document.getElementById('product-stock').value,
+          description: document.getElementById('product-description').value
+        };
+        addProduct(productData);
       });
     });
   </script>
