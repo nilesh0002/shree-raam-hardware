@@ -34,6 +34,57 @@ const initializeProducts = async () => {
   }
 };
 
+// Initialize test data
+const initializeTestData = async () => {
+  try {
+    const userCount = await User.countDocuments();
+    const orderCount = await Order.countDocuments();
+    
+    if (userCount === 0) {
+      const testUsers = [
+        { name: 'Rajesh Kumar', phone: '9876543210', email: 'rajesh@example.com', password: '123456' },
+        { name: 'Priya Sharma', phone: '9876543211', email: 'priya@example.com', password: '123456' },
+        { name: 'Amit Singh', phone: '9876543212', email: 'amit@example.com', password: '123456' }
+      ];
+      await User.insertMany(testUsers);
+      console.log('Test users initialized');
+    }
+    
+    if (orderCount === 0) {
+      const testOrders = [
+        {
+          customerName: 'Rajesh Kumar',
+          phone: '9876543210',
+          address: '123 MG Road, Mumbai, Maharashtra - 400001',
+          items: [{ name: 'Hammer', quantity: 2, price: 250 }, { name: 'Screwdriver Set', quantity: 1, price: 180 }],
+          total: 680,
+          status: 'Delivered'
+        },
+        {
+          customerName: 'Priya Sharma',
+          phone: '9876543211',
+          address: '456 Park Street, Delhi, Delhi - 110001',
+          items: [{ name: 'Drill Machine', quantity: 1, price: 2500 }],
+          total: 2500,
+          status: 'Pending'
+        },
+        {
+          customerName: 'Amit Singh',
+          phone: '9876543212',
+          address: '789 Brigade Road, Bangalore, Karnataka - 560001',
+          items: [{ name: 'Paint Brush', quantity: 3, price: 45 }, { name: 'Cement (50kg)', quantity: 2, price: 350 }],
+          total: 835,
+          status: 'Shipped'
+        }
+      ];
+      await Order.insertMany(testOrders);
+      console.log('Test orders initialized');
+    }
+  } catch (error) {
+    console.error('Error initializing test data:', error);
+  }
+};
+
 // MongoDB Connection with better configuration
 const connectDB = async () => {
   try {
@@ -47,6 +98,7 @@ const connectDB = async () => {
     });
     console.log('Connected to MongoDB Atlas');
     await initializeProducts();
+    await initializeTestData();
   } catch (error) {
     console.error('MongoDB connection error:', error);
     // Return mock data if DB fails
