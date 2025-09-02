@@ -121,10 +121,9 @@
               </div>
             </div>
           `).join('');
-          return;
         }
       } catch (error) {
-        console.log('Backend failed, using static products');
+        console.log('Using static products');
       }
     }
     
@@ -138,6 +137,7 @@
       return icons[category] || '🔧';
     }
     
+    // Products show by default, only load from API if available
     loadProducts();
   </script>
 </body>
