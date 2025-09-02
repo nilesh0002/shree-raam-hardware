@@ -1,10 +1,10 @@
-// API Configuration
+// API Configuration for Vercel
 const config = {
   development: {
     API_URL: 'http://localhost:5000'
   },
   production: {
-    API_URL: 'https://your-backend-url.railway.app' // Replace with your hosted backend URL
+    API_URL: '' // Same domain for Vercel full-stack deployment
   }
 };
 
