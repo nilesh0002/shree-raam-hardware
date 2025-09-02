@@ -1625,7 +1625,13 @@
 
     function loadCustomers() {
       const customersList = document.getElementById('customers-list');
-      const validCustomers = customers.filter(customer => customer.name && customer.phone);
+      const validCustomers = customers.filter(customer => 
+        customer.name && 
+        customer.phone && 
+        customer.name !== 'User' && 
+        customer.name.length > 2 &&
+        orders.some(order => order.phone === customer.phone)
+      );
       
       if (validCustomers.length === 0) {
         customersList.innerHTML = '<div class="empty-state"><h3>No customers yet</h3></div>';
@@ -1816,6 +1822,12 @@
       loadProducts();
       updateCartDisplay();
       updateUserInterface();
+      
+      // Check if admin was logged in
+      if (isAdmin) {
+        showSection('admin-dashboard');
+        updateAdminStats();
+      }
       
       // Checkout form
       document.getElementById('checkout-form').addEventListener('submit', function(e) {
