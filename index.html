@@ -229,39 +229,19 @@
   <script>
     const API_BASE = 'https://shree-raam-hardware-frontend.vercel.app';
     
-    async function loadProducts() {
-      try {
-        const response = await fetch('/api/products');
-        const products = await response.json();
-        
-        const grid = document.querySelector('.products-grid');
+    function loadProducts() {
+      const products = [
+        { name: 'Hammer', category: 'Tools', price: 250 },
+        { name: 'Screwdriver Set', category: 'Tools', price: 180 },
+        { name: 'Drill Machine', category: 'Power Tools', price: 2500 },
+        { name: 'Paint Brush', category: 'Painting', price: 45 },
+        { name: 'Cement (50kg)', category: 'Construction', price: 350 },
+        { name: 'Steel Rod (12mm)', category: 'Construction', price: 65 }
+      ];
+      
+      const grid = document.querySelector('.products-grid');
+      if (grid) {
         grid.innerHTML = products.map(product => `
-          <div class="product-card">
-            <div class="product-image">
-              <div class="product-icon">${getIcon(product.category)}</div>
-            </div>
-            <div class="product-info">
-              <h3>${product.name}</h3>
-              <p class="category">${product.category}</p>
-              <div class="price">₹${product.price.toLocaleString()}</div>
-              <button class="btn">Add to Cart</button>
-            </div>
-          </div>
-        `).join('');
-      } catch (error) {
-        console.error('Failed to load products:', error);
-        // Fallback products
-        const fallbackProducts = [
-          { name: 'Hammer', category: 'Tools', price: 250 },
-          { name: 'Screwdriver Set', category: 'Tools', price: 180 },
-          { name: 'Drill Machine', category: 'Power Tools', price: 2500 },
-          { name: 'Paint Brush', category: 'Painting', price: 45 },
-          { name: 'Cement (50kg)', category: 'Construction', price: 350 },
-          { name: 'Steel Rod (12mm)', category: 'Construction', price: 65 }
-        ];
-        
-        const grid = document.querySelector('.products-grid');
-        grid.innerHTML = fallbackProducts.map(product => `
           <div class="product-card">
             <div class="product-image">
               <div class="product-icon">${getIcon(product.category)}</div>
