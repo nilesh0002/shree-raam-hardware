@@ -20,48 +20,85 @@
     .section { background: white; margin: 2rem 0; padding: 2rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
     .hidden { display: none; }
     
+    .hero { background: linear-gradient(135deg, #007cba, #005a8b); color: white; text-align: center; padding: 3rem 2rem; border-radius: 15px; margin-bottom: 2rem; }
+    .hero h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+    .hero p { font-size: 1.2rem; opacity: 0.9; }
+    
+    .category-filter { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+    .filter-btn { background: #f8f9fa; border: 1px solid #ddd; padding: 0.5rem 1rem; border-radius: 25px; cursor: pointer; }
+    .filter-btn.active { background: #007cba; color: white; }
+    
     .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-    .product-card { border: 1px solid #ddd; padding: 1.5rem; border-radius: 10px; background: white; transition: transform 0.2s; }
-    .product-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-    .price { font-size: 1.5rem; font-weight: bold; color: #007cba; margin: 0.5rem 0; }
+    .product-card { border: 1px solid #ddd; padding: 1.5rem; border-radius: 15px; background: white; transition: all 0.3s; position: relative; overflow: hidden; }
+    .product-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+    .product-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #007cba, #28a745); }
+    .price { font-size: 1.8rem; font-weight: bold; color: #007cba; margin: 0.5rem 0; }
     .stock { color: #28a745; font-weight: bold; }
-    .btn { background: #007cba; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 5px; cursor: pointer; font-size: 1rem; }
-    .btn:hover { background: #005a8b; }
+    .low-stock { color: #dc3545; }
+    .btn { background: #007cba; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-size: 1rem; transition: all 0.3s; }
+    .btn:hover { background: #005a8b; transform: translateY(-2px); }
     .btn-secondary { background: #6c757d; }
     .btn-secondary:hover { background: #545b62; }
     .btn-danger { background: #dc3545; }
     .btn-danger:hover { background: #c82333; }
     .btn-success { background: #28a745; }
     .btn-success:hover { background: #218838; }
+    .btn-warning { background: #ffc107; color: #000; }
+    .btn-warning:hover { background: #e0a800; }
     
     .form-group { margin: 1rem 0; }
     .form-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
-    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; }
+    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: #007cba; box-shadow: 0 0 0 3px rgba(0,124,186,0.1); }
     
     .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid #eee; }
-    .cart-total { font-size: 1.5rem; font-weight: bold; color: #007cba; text-align: right; margin-top: 1rem; }
+    .cart-total { font-size: 1.8rem; font-weight: bold; color: #007cba; text-align: right; margin-top: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; }
     
     .admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
-    .stat-card { background: #007cba; color: white; padding: 1.5rem; border-radius: 10px; text-align: center; }
-    .stat-number { font-size: 2rem; font-weight: bold; }
+    .stat-card { background: linear-gradient(135deg, #007cba, #005a8b); color: white; padding: 2rem; border-radius: 15px; text-align: center; }
+    .stat-number { font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem; }
     
-    .order-item { border: 1px solid #ddd; padding: 1rem; margin: 1rem 0; border-radius: 5px; }
-    .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
-    .order-status { padding: 0.25rem 0.5rem; border-radius: 3px; color: white; font-size: 0.8rem; }
+    .order-item { border: 1px solid #ddd; padding: 1.5rem; margin: 1rem 0; border-radius: 10px; background: white; }
+    .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .order-status { padding: 0.5rem 1rem; border-radius: 20px; color: white; font-size: 0.9rem; font-weight: bold; }
     .status-pending { background: #ffc107; color: #000; }
     .status-confirmed { background: #28a745; }
     .status-shipped { background: #007cba; }
     .status-delivered { background: #6f42c1; }
     .status-cancelled { background: #dc3545; }
     
-    .success-message { background: #d4edda; color: #155724; padding: 1rem; border-radius: 5px; margin: 1rem 0; }
-    .error-message { background: #f8d7da; color: #721c24; padding: 1rem; border-radius: 5px; margin: 1rem 0; }
+    .user-profile { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .address-card { border: 1px solid #ddd; padding: 1rem; border-radius: 8px; margin: 0.5rem 0; }
+    .address-card.default { border-color: #007cba; background: #f8f9fa; }
+    
+    .search-bar { width: 100%; padding: 1rem; border: 2px solid #ddd; border-radius: 25px; font-size: 1.1rem; margin-bottom: 2rem; }
+    .search-bar:focus { outline: none; border-color: #007cba; }
+    
+    .success-message { background: #d4edda; color: #155724; padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #28a745; }
+    .error-message { background: #f8d7da; color: #721c24; padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #dc3545; }
+    .info-message { background: #d1ecf1; color: #0c5460; padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #17a2b8; }
+    
+    .quantity-controls { display: flex; align-items: center; gap: 0.5rem; margin: 0.5rem 0; }
+    .quantity-btn { background: #f8f9fa; border: 1px solid #ddd; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .quantity-input { width: 60px; text-align: center; border: 1px solid #ddd; border-radius: 4px; padding: 0.25rem; }
+    
+    .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+    .modal-content { background: white; padding: 2rem; border-radius: 15px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto; }
+    
+    .tabs { display: flex; border-bottom: 2px solid #f8f9fa; margin-bottom: 2rem; }
+    .tab { padding: 1rem 2rem; cursor: pointer; border-bottom: 2px solid transparent; }
+    .tab.active { border-bottom-color: #007cba; color: #007cba; font-weight: bold; }
+    
+    .notification { position: fixed; top: 20px; right: 20px; background: #28a745; color: white; padding: 1rem 2rem; border-radius: 8px; z-index: 1001; }
     
     @media (max-width: 768px) {
       .navbar { flex-direction: column; gap: 1rem; }
-      .nav-buttons { flex-wrap: wrap; }
+      .nav-buttons { flex-wrap: wrap; justify-content: center; }
       .container { padding: 1rem; }
+      .hero h2 { font-size: 2rem; }
+      .user-profile { grid-template-columns: 1fr; }
       .order-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+      .admin-stats { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
@@ -70,34 +107,50 @@
   <nav class="navbar">
     <h1>🔨 Shree Raam Hardware Store</h1>
     <div class="nav-buttons">
-      <button class="nav-btn" onclick="showSection('home')">Home</button>
-      <button class="nav-btn" onclick="showSection('cart')">Cart (<span id="cart-count">0</span>)</button>
-      <button class="nav-btn" onclick="showSection('login')">Login</button>
-      <button class="nav-btn" onclick="showSection('register')">Register</button>
-      <button class="nav-btn admin-btn" onclick="showSection('admin-login')">Admin</button>
+      <button class="nav-btn" onclick="showSection('home')">🏠 Home</button>
+      <button class="nav-btn" onclick="showSection('cart')">🛒 Cart (<span id="cart-count">0</span>)</button>
+      <button class="nav-btn" onclick="showSection('account')" id="account-btn">👤 Account</button>
+      <button class="nav-btn" onclick="showSection('login')" id="login-btn">🔑 Login</button>
+      <button class="nav-btn admin-btn" onclick="showSection('admin-login')">🔐 Admin</button>
     </div>
   </nav>
 
   <div class="container">
     <!-- Home Section -->
     <div id="home" class="section">
-      <h2>Welcome to Shree Raam Hardware Store</h2>
-      <p>Your trusted online hardware store for tools, construction materials, and more!</p>
+      <div class="hero">
+        <h2>Welcome to Shree Raam Hardware Store</h2>
+        <p>Your trusted online hardware store for tools, construction materials, and more!</p>
+      </div>
+      
+      <input type="text" class="search-bar" placeholder="🔍 Search products..." onkeyup="searchProducts(this.value)">
+      
+      <div class="category-filter">
+        <button class="filter-btn active" onclick="filterByCategory('all')">All Products</button>
+        <button class="filter-btn" onclick="filterByCategory('Tools')">🔨 Tools</button>
+        <button class="filter-btn" onclick="filterByCategory('Power Tools')">⚡ Power Tools</button>
+        <button class="filter-btn" onclick="filterByCategory('Painting')">🎨 Painting</button>
+        <button class="filter-btn" onclick="filterByCategory('Construction')">🏗️ Construction</button>
+      </div>
       
       <div class="products-grid" id="products-grid"></div>
     </div>
 
     <!-- Cart Section -->
     <div id="cart" class="section hidden">
-      <h2>Shopping Cart</h2>
+      <h2>🛒 Shopping Cart</h2>
       <div id="cart-items"></div>
       <div class="cart-total" id="cart-total">Total: ₹0</div>
-      <button class="btn" onclick="showSection('checkout')" id="checkout-btn" style="display:none;">Proceed to Checkout</button>
+      <div style="margin-top: 2rem;">
+        <button class="btn" onclick="showSection('checkout')" id="checkout-btn" style="display:none;">Proceed to Checkout</button>
+        <button class="btn btn-secondary" onclick="clearCart()">Clear Cart</button>
+      </div>
     </div>
 
     <!-- Checkout Section -->
     <div id="checkout" class="section hidden">
-      <h2>Checkout</h2>
+      <h2>📋 Checkout</h2>
+      <div id="checkout-summary"></div>
       <form id="checkout-form">
         <div class="form-group">
           <label>Full Name:</label>
@@ -108,17 +161,67 @@
           <input type="tel" id="customer-phone" required>
         </div>
         <div class="form-group">
+          <label>Email:</label>
+          <input type="email" id="customer-email">
+        </div>
+        <div class="form-group">
           <label>Delivery Address:</label>
           <textarea id="customer-address" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+          <label>Payment Method:</label>
+          <select id="payment-method">
+            <option value="cod">Cash on Delivery</option>
+            <option value="online">Online Payment</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Special Instructions:</label>
+          <textarea id="special-instructions" rows="2" placeholder="Any special delivery instructions..."></textarea>
         </div>
         <button type="submit" class="btn">Place Order</button>
         <button type="button" class="btn btn-secondary" onclick="showSection('cart')">Back to Cart</button>
       </form>
     </div>
 
+    <!-- Account Section -->
+    <div id="account" class="section hidden">
+      <h2>👤 My Account</h2>
+      <div class="tabs">
+        <div class="tab active" onclick="showAccountTab('profile')">Profile</div>
+        <div class="tab" onclick="showAccountTab('orders')">My Orders</div>
+        <div class="tab" onclick="showAccountTab('addresses')">Addresses</div>
+      </div>
+      
+      <div id="account-profile">
+        <div class="user-profile">
+          <div>
+            <h3>Profile Information</h3>
+            <div id="user-info"></div>
+            <button class="btn" onclick="editProfile()">Edit Profile</button>
+          </div>
+          <div>
+            <h3>Account Statistics</h3>
+            <div id="user-stats"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="account-orders" class="hidden">
+        <h3>📦 Order History</h3>
+        <div id="user-orders"></div>
+      </div>
+      
+      <div id="account-addresses" class="hidden">
+        <h3>📍 Saved Addresses</h3>
+        <div id="user-addresses"></div>
+        <button class="btn" onclick="addNewAddress()">Add New Address</button>
+      </div>
+    </div>
+
     <!-- Login Section -->
     <div id="login" class="section hidden">
-      <h2>User Login</h2>
+      <h2>🔑 User Login</h2>
       <form id="login-form">
         <div class="form-group">
           <label>Phone Number:</label>
@@ -130,12 +233,13 @@
         </div>
         <button type="submit" class="btn">Login</button>
         <button type="button" class="btn btn-secondary" onclick="showSection('register')">Create Account</button>
+        <button type="button" class="btn btn-warning" onclick="forgotPassword()">Forgot Password?</button>
       </form>
     </div>
 
     <!-- Register Section -->
     <div id="register" class="section hidden">
-      <h2>Create Account</h2>
+      <h2>📝 Create Account</h2>
       <form id="register-form">
         <div class="form-group">
           <label>Full Name:</label>
@@ -152,6 +256,10 @@
         <div class="form-group">
           <label>Password:</label>
           <input type="password" id="register-password" required>
+        </div>
+        <div class="form-group">
+          <label>Confirm Password:</label>
+          <input type="password" id="register-confirm-password" required>
         </div>
         <button type="submit" class="btn">Create Account</button>
         <button type="button" class="btn btn-secondary" onclick="showSection('login')">Already have account?</button>
@@ -173,7 +281,7 @@
         <button type="submit" class="btn btn-danger">Admin Login</button>
         <button type="button" class="btn btn-secondary" onclick="showSection('home')">Back to Store</button>
       </form>
-      <div class="success-message" style="margin-top: 1rem;">
+      <div class="info-message" style="margin-top: 1rem;">
         <strong>Demo Admin Credentials:</strong><br>
         Username: admin<br>
         Password: shree@123
@@ -203,22 +311,40 @@
         </div>
       </div>
 
+      <div class="tabs">
+        <div class="tab active" onclick="showAdminTab('orders')">📦 Orders</div>
+        <div class="tab" onclick="showAdminTab('customers')">👥 Customers</div>
+        <div class="tab" onclick="showAdminTab('products')">📦 Products</div>
+        <div class="tab" onclick="showAdminTab('analytics')">📈 Analytics</div>
+      </div>
+
       <div style="margin-bottom: 2rem;">
-        <button class="btn" onclick="showAdminSection('orders')">Manage Orders</button>
-        <button class="btn btn-secondary" onclick="showAdminSection('customers')">View Customers</button>
         <button class="btn btn-danger" onclick="adminLogout()">Logout</button>
       </div>
 
       <!-- Orders Management -->
-      <div id="admin-orders" class="hidden">
+      <div id="admin-orders">
         <h3>📦 Order Management</h3>
         <div id="orders-list"></div>
       </div>
 
       <!-- Customers List -->
       <div id="admin-customers" class="hidden">
-        <h3>👥 Customer List</h3>
+        <h3>👥 Customer Management</h3>
         <div id="customers-list"></div>
+      </div>
+
+      <!-- Products Management -->
+      <div id="admin-products" class="hidden">
+        <h3>📦 Product Management</h3>
+        <button class="btn" onclick="addNewProduct()">Add New Product</button>
+        <div id="products-management"></div>
+      </div>
+
+      <!-- Analytics -->
+      <div id="admin-analytics" class="hidden">
+        <h3>📈 Sales Analytics</h3>
+        <div id="analytics-content"></div>
       </div>
     </div>
   </div>
@@ -226,12 +352,12 @@
   <script>
     // Products data
     const products = [
-      { _id: '1', name: 'Hammer', category: 'Tools', price: 250, stock: 50, image: 'hammer.jpg' },
-      { _id: '2', name: 'Screwdriver Set', category: 'Tools', price: 180, stock: 30, image: 'screwdriver.jpg' },
-      { _id: '3', name: 'Drill Machine', category: 'Power Tools', price: 2500, stock: 15, image: 'drill.jpg' },
-      { _id: '4', name: 'Paint Brush', category: 'Painting', price: 45, stock: 100, image: 'brush.jpg' },
-      { _id: '5', name: 'Cement (50kg)', category: 'Construction', price: 350, stock: 25, image: 'cement.jpg' },
-      { _id: '6', name: 'Steel Rod (12mm)', category: 'Construction', price: 65, stock: 200, image: 'rod.jpg' }
+      { _id: '1', name: 'Hammer', category: 'Tools', price: 250, stock: 50, image: 'hammer.jpg', description: 'Heavy-duty steel hammer for construction work' },
+      { _id: '2', name: 'Screwdriver Set', category: 'Tools', price: 180, stock: 30, image: 'screwdriver.jpg', description: 'Complete set of Phillips and flathead screwdrivers' },
+      { _id: '3', name: 'Drill Machine', category: 'Power Tools', price: 2500, stock: 15, image: 'drill.jpg', description: 'High-power electric drill with multiple bits' },
+      { _id: '4', name: 'Paint Brush', category: 'Painting', price: 45, stock: 100, image: 'brush.jpg', description: 'Professional quality paint brush for smooth finish' },
+      { _id: '5', name: 'Cement (50kg)', category: 'Construction', price: 350, stock: 25, image: 'cement.jpg', description: 'Premium quality cement for construction projects' },
+      { _id: '6', name: 'Steel Rod (12mm)', category: 'Construction', price: 65, stock: 200, image: 'rod.jpg', description: 'High-grade steel reinforcement rod' }
     ];
 
     let cart = [];
@@ -239,55 +365,143 @@
     let isAdmin = false;
     let orders = [];
     let customers = [];
+    let filteredProducts = [...products];
 
     // Show/Hide sections
     function showSection(sectionName) {
       document.querySelectorAll('.section').forEach(section => section.classList.add('hidden'));
       document.getElementById(sectionName).classList.remove('hidden');
-    }
-
-    function showAdminSection(sectionName) {
-      document.querySelectorAll('#admin-dashboard > div').forEach(div => {
-        if (div.id.startsWith('admin-')) div.classList.add('hidden');
-      });
-      document.getElementById(`admin-${sectionName}`).classList.remove('hidden');
       
-      if (sectionName === 'orders') loadOrders();
-      if (sectionName === 'customers') loadCustomers();
+      if (sectionName === 'account' && !currentUser) {
+        showSection('login');
+        showNotification('Please login to access your account', 'error');
+        return;
+      }
+      
+      if (sectionName === 'account') {
+        loadUserAccount();
+      }
     }
 
-    // Load products
+    function showAccountTab(tabName) {
+      document.querySelectorAll('#account .tab').forEach(tab => tab.classList.remove('active'));
+      document.querySelector(`#account .tab:nth-child(${tabName === 'profile' ? 1 : tabName === 'orders' ? 2 : 3})`).classList.add('active');
+      
+      document.querySelectorAll('#account > div:not(.tabs)').forEach(div => div.classList.add('hidden'));
+      document.getElementById(`account-${tabName}`).classList.remove('hidden');
+      
+      if (tabName === 'orders') loadUserOrders();
+      if (tabName === 'addresses') loadUserAddresses();
+    }
+
+    function showAdminTab(tabName) {
+      document.querySelectorAll('#admin-dashboard .tab').forEach(tab => tab.classList.remove('active'));
+      document.querySelector(`#admin-dashboard .tab:nth-child(${tabName === 'orders' ? 1 : tabName === 'customers' ? 2 : tabName === 'products' ? 3 : 4})`).classList.add('active');
+      
+      document.querySelectorAll('#admin-dashboard > div:not(.tabs):not(.admin-stats):not([style])').forEach(div => div.classList.add('hidden'));
+      document.getElementById(`admin-${tabName}`).classList.remove('hidden');
+      
+      if (tabName === 'orders') loadOrders();
+      if (tabName === 'customers') loadCustomers();
+      if (tabName === 'products') loadProductsManagement();
+      if (tabName === 'analytics') loadAnalytics();
+    }
+
+    // Product functions
     function loadProducts() {
       const grid = document.getElementById('products-grid');
-      grid.innerHTML = products.map(product => `
+      grid.innerHTML = filteredProducts.map(product => `
         <div class="product-card">
           <h3>${product.name}</h3>
           <p><strong>Category:</strong> ${product.category}</p>
+          <p class="description">${product.description}</p>
           <div class="price">₹${product.price}</div>
-          <p class="stock">Stock: ${product.stock} units</p>
-          <button class="btn" onclick="addToCart('${product._id}')">Add to Cart</button>
+          <p class="stock ${product.stock < 20 ? 'low-stock' : ''}">
+            Stock: ${product.stock} units ${product.stock < 20 ? '⚠️' : ''}
+          </p>
+          <div class="quantity-controls">
+            <button class="quantity-btn" onclick="changeQuantity('${product._id}', -1)">-</button>
+            <input type="number" class="quantity-input" id="qty-${product._id}" value="1" min="1" max="${product.stock}">
+            <button class="quantity-btn" onclick="changeQuantity('${product._id}', 1)">+</button>
+          </div>
+          <button class="btn" onclick="addToCart('${product._id}')" ${product.stock === 0 ? 'disabled' : ''}>
+            ${product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+          </button>
         </div>
       `).join('');
+    }
+
+    function searchProducts(query) {
+      if (!query.trim()) {
+        filteredProducts = [...products];
+      } else {
+        filteredProducts = products.filter(product => 
+          product.name.toLowerCase().includes(query.toLowerCase()) ||
+          product.category.toLowerCase().includes(query.toLowerCase()) ||
+          product.description.toLowerCase().includes(query.toLowerCase())
+        );
+      }
+      loadProducts();
+    }
+
+    function filterByCategory(category) {
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      if (category === 'all') {
+        filteredProducts = [...products];
+      } else {
+        filteredProducts = products.filter(product => product.category === category);
+      }
+      loadProducts();
+    }
+
+    function changeQuantity(productId, change) {
+      const input = document.getElementById(`qty-${productId}`);
+      const newValue = parseInt(input.value) + change;
+      const product = products.find(p => p._id === productId);
+      
+      if (newValue >= 1 && newValue <= product.stock) {
+        input.value = newValue;
+      }
     }
 
     // Cart functions
     function addToCart(productId) {
       const product = products.find(p => p._id === productId);
+      const quantity = parseInt(document.getElementById(`qty-${productId}`).value);
       const existingItem = cart.find(item => item._id === productId);
       
       if (existingItem) {
-        existingItem.quantity += 1;
+        existingItem.quantity += quantity;
       } else {
-        cart.push({...product, quantity: 1});
+        cart.push({...product, quantity});
       }
       
       updateCartDisplay();
-      alert(`${product.name} added to cart! 🛒`);
+      showNotification(`${product.name} (${quantity}) added to cart! 🛒`, 'success');
     }
 
     function removeFromCart(productId) {
       cart = cart.filter(item => item._id !== productId);
       updateCartDisplay();
+      showNotification('Item removed from cart', 'info');
+    }
+
+    function updateCartQuantity(productId, newQuantity) {
+      const item = cart.find(item => item._id === productId);
+      if (item) {
+        item.quantity = Math.max(1, newQuantity);
+        updateCartDisplay();
+      }
+    }
+
+    function clearCart() {
+      if (confirm('Are you sure you want to clear your cart?')) {
+        cart = [];
+        updateCartDisplay();
+        showNotification('Cart cleared', 'info');
+      }
     }
 
     function updateCartDisplay() {
@@ -299,7 +513,7 @@
       cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
       
       if (cart.length === 0) {
-        cartItems.innerHTML = '<p>Your cart is empty</p>';
+        cartItems.innerHTML = '<div class="info-message">Your cart is empty. Start shopping to add items!</div>';
         cartTotal.textContent = 'Total: ₹0';
         checkoutBtn.style.display = 'none';
       } else {
@@ -307,23 +521,126 @@
           <div class="cart-item">
             <div>
               <h4>${item.name}</h4>
-              <p>₹${item.price} x ${item.quantity} = ₹${item.price * item.quantity}</p>
+              <p>₹${item.price} each</p>
+              <div class="quantity-controls">
+                <button class="quantity-btn" onclick="updateCartQuantity('${item._id}', ${item.quantity - 1})">-</button>
+                <span style="margin: 0 1rem;">${item.quantity}</span>
+                <button class="quantity-btn" onclick="updateCartQuantity('${item._id}', ${item.quantity + 1})">+</button>
+              </div>
+              <p><strong>Subtotal: ₹${item.price * item.quantity}</strong></p>
             </div>
-            <button class="btn btn-secondary" onclick="removeFromCart('${item._id}')">Remove</button>
+            <button class="btn btn-danger" onclick="removeFromCart('${item._id}')">Remove</button>
           </div>
         `).join('');
         
         const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        cartTotal.textContent = `Total: ₹${total}`;
+        cartTotal.innerHTML = `
+          <div>Subtotal: ₹${total}</div>
+          <div>Delivery: ₹${total > 1000 ? 0 : 50}</div>
+          <div style="font-size: 2rem; margin-top: 0.5rem;">Total: ₹${total + (total > 1000 ? 0 : 50)}</div>
+          ${total > 1000 ? '<div style="color: #28a745; font-size: 1rem;">🎉 Free delivery on orders above ₹1000!</div>' : ''}
+        `;
         checkoutBtn.style.display = 'block';
       }
+      
+      // Update checkout summary
+      updateCheckoutSummary();
+    }
+
+    function updateCheckoutSummary() {
+      const summary = document.getElementById('checkout-summary');
+      if (!summary) return;
+      
+      const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const delivery = total > 1000 ? 0 : 50;
+      
+      summary.innerHTML = `
+        <div class="info-message">
+          <h3>Order Summary</h3>
+          ${cart.map(item => `<p>${item.name} x ${item.quantity} = ₹${item.price * item.quantity}</p>`).join('')}
+          <hr>
+          <p><strong>Subtotal: ₹${total}</strong></p>
+          <p><strong>Delivery: ₹${delivery}</strong></p>
+          <p style="font-size: 1.2rem;"><strong>Total: ₹${total + delivery}</strong></p>
+        </div>
+      `;
+    }
+
+    // User functions
+    function loadUserAccount() {
+      if (!currentUser) return;
+      
+      document.getElementById('user-info').innerHTML = `
+        <p><strong>Name:</strong> ${currentUser.name}</p>
+        <p><strong>Phone:</strong> ${currentUser.phone}</p>
+        <p><strong>Email:</strong> ${currentUser.email}</p>
+        <p><strong>Member Since:</strong> ${currentUser.joinDate || 'Recently'}</p>
+      `;
+      
+      const userOrders = orders.filter(order => order.phone === currentUser.phone);
+      document.getElementById('user-stats').innerHTML = `
+        <div class="stat-card" style="background: #28a745;">
+          <div class="stat-number">${userOrders.length}</div>
+          <div>Total Orders</div>
+        </div>
+        <div class="stat-card" style="background: #007cba;">
+          <div class="stat-number">₹${userOrders.reduce((sum, order) => sum + order.total, 0)}</div>
+          <div>Total Spent</div>
+        </div>
+      `;
+    }
+
+    function loadUserOrders() {
+      const userOrders = orders.filter(order => order.phone === currentUser.phone);
+      const ordersDiv = document.getElementById('user-orders');
+      
+      if (userOrders.length === 0) {
+        ordersDiv.innerHTML = '<div class="info-message">No orders yet. Start shopping!</div>';
+        return;
+      }
+      
+      ordersDiv.innerHTML = userOrders.map(order => `
+        <div class="order-item">
+          <div class="order-header">
+            <div>
+              <strong>Order #${order.id}</strong>
+              <br><small>${new Date(order.date).toLocaleDateString()}</small>
+            </div>
+            <span class="order-status status-${order.status.toLowerCase()}">${order.status}</span>
+          </div>
+          <p><strong>Items:</strong> ${order.items.map(item => `${item.name} (${item.quantity})`).join(', ')}</p>
+          <p><strong>Total:</strong> ₹${order.total}</p>
+          <p><strong>Address:</strong> ${order.address}</p>
+          ${order.status === 'Pending' ? `<button class="btn btn-danger" onclick="cancelOrder('${order.id}')">Cancel Order</button>` : ''}
+        </div>
+      `).join('');
+    }
+
+    function loadUserAddresses() {
+      const addressesDiv = document.getElementById('user-addresses');
+      const addresses = currentUser.addresses || [];
+      
+      if (addresses.length === 0) {
+        addressesDiv.innerHTML = '<div class="info-message">No saved addresses. Add your first address!</div>';
+        return;
+      }
+      
+      addressesDiv.innerHTML = addresses.map((address, index) => `
+        <div class="address-card ${address.default ? 'default' : ''}">
+          <h4>${address.label} ${address.default ? '(Default)' : ''}</h4>
+          <p>${address.address}</p>
+          <button class="btn btn-secondary" onclick="editAddress(${index})">Edit</button>
+          <button class="btn btn-danger" onclick="deleteAddress(${index})">Delete</button>
+          ${!address.default ? `<button class="btn" onclick="setDefaultAddress(${index})">Set Default</button>` : ''}
+        </div>
+      `).join('');
     }
 
     // Admin functions
     function loadOrders() {
       const ordersList = document.getElementById('orders-list');
       if (orders.length === 0) {
-        ordersList.innerHTML = '<p>No orders yet</p>';
+        ordersList.innerHTML = '<div class="info-message">No orders yet</div>';
         return;
       }
       
@@ -339,7 +656,9 @@
           <p><strong>Items:</strong> ${order.items.map(item => `${item.name} (${item.quantity})`).join(', ')}</p>
           <p><strong>Total:</strong> ₹${order.total}</p>
           <p><strong>Address:</strong> ${order.address}</p>
-          <div style="margin-top: 0.5rem;">
+          <p><strong>Payment:</strong> ${order.paymentMethod || 'COD'}</p>
+          ${order.specialInstructions ? `<p><strong>Instructions:</strong> ${order.specialInstructions}</p>` : ''}
+          <div style="margin-top: 1rem;">
             <select onchange="updateOrderStatus('${order.id}', this.value)">
               <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
               <option value="Confirmed" ${order.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
@@ -347,6 +666,7 @@
               <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
               <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
             </select>
+            <button class="btn btn-secondary" onclick="viewOrderDetails('${order.id}')">View Details</button>
           </div>
         </div>
       `).join('');
@@ -355,7 +675,7 @@
     function loadCustomers() {
       const customersList = document.getElementById('customers-list');
       if (customers.length === 0) {
-        customersList.innerHTML = '<p>No customers yet</p>';
+        customersList.innerHTML = '<div class="info-message">No customers yet</div>';
         return;
       }
       
@@ -365,8 +685,71 @@
           <p><strong>Phone:</strong> ${customer.phone}</p>
           <p><strong>Email:</strong> ${customer.email}</p>
           <p><strong>Orders:</strong> ${customer.orderCount || 0}</p>
+          <p><strong>Total Spent:</strong> ₹${orders.filter(o => o.phone === customer.phone).reduce((sum, order) => sum + order.total, 0)}</p>
+          <button class="btn" onclick="viewCustomerOrders('${customer.phone}')">View Orders</button>
         </div>
       `).join('');
+    }
+
+    function loadProductsManagement() {
+      const productsDiv = document.getElementById('products-management');
+      productsDiv.innerHTML = products.map(product => `
+        <div class="order-item">
+          <h4>${product.name}</h4>
+          <p><strong>Category:</strong> ${product.category}</p>
+          <p><strong>Price:</strong> ₹${product.price}</p>
+          <p><strong>Stock:</strong> ${product.stock} units</p>
+          <p><strong>Description:</strong> ${product.description}</p>
+          <button class="btn" onclick="editProduct('${product._id}')">Edit</button>
+          <button class="btn btn-warning" onclick="updateStock('${product._id}')">Update Stock</button>
+          <button class="btn btn-danger" onclick="deleteProduct('${product._id}')">Delete</button>
+        </div>
+      `).join('');
+    }
+
+    function loadAnalytics() {
+      const analyticsDiv = document.getElementById('analytics-content');
+      const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
+      const avgOrderValue = orders.length > 0 ? totalRevenue / orders.length : 0;
+      
+      analyticsDiv.innerHTML = `
+        <div class="admin-stats">
+          <div class="stat-card">
+            <div class="stat-number">₹${avgOrderValue.toFixed(0)}</div>
+            <div>Avg Order Value</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">${orders.filter(o => o.status === 'Delivered').length}</div>
+            <div>Completed Orders</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">${orders.filter(o => o.status === 'Pending').length}</div>
+            <div>Pending Orders</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">${Math.round((orders.filter(o => o.status === 'Delivered').length / orders.length) * 100) || 0}%</div>
+            <div>Success Rate</div>
+          </div>
+        </div>
+        <div class="info-message">
+          <h3>Top Selling Products</h3>
+          ${getTopProducts().map(product => `<p>${product.name}: ${product.sold} sold</p>`).join('')}
+        </div>
+      `;
+    }
+
+    function getTopProducts() {
+      const productSales = {};
+      orders.forEach(order => {
+        order.items.forEach(item => {
+          productSales[item.name] = (productSales[item.name] || 0) + item.quantity;
+        });
+      });
+      
+      return Object.entries(productSales)
+        .map(([name, sold]) => ({name, sold}))
+        .sort((a, b) => b.sold - a.sold)
+        .slice(0, 5);
     }
 
     function updateOrderStatus(orderId, newStatus) {
@@ -375,7 +758,7 @@
         order.status = newStatus;
         loadOrders();
         updateAdminStats();
-        alert(`Order #${orderId} status updated to ${newStatus}`);
+        showNotification(`Order #${orderId} status updated to ${newStatus}`, 'success');
       }
     }
 
@@ -388,7 +771,42 @@
     function adminLogout() {
       isAdmin = false;
       showSection('home');
-      alert('Admin logged out successfully');
+      showNotification('Admin logged out successfully', 'info');
+    }
+
+    // Utility functions
+    function showNotification(message, type = 'success') {
+      const notification = document.createElement('div');
+      notification.className = 'notification';
+      notification.style.background = type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8';
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+
+    function updateUserInterface() {
+      const loginBtn = document.getElementById('login-btn');
+      const accountBtn = document.getElementById('account-btn');
+      
+      if (currentUser) {
+        loginBtn.textContent = '🚪 Logout';
+        loginBtn.onclick = () => logout();
+        accountBtn.style.display = 'block';
+      } else {
+        loginBtn.textContent = '🔑 Login';
+        loginBtn.onclick = () => showSection('login');
+        accountBtn.style.display = 'none';
+      }
+    }
+
+    function logout() {
+      currentUser = null;
+      updateUserInterface();
+      showSection('home');
+      showNotification('Logged out successfully', 'info');
     }
 
     // Form handlers
@@ -396,35 +814,57 @@
       e.preventDefault();
       const name = document.getElementById('customer-name').value;
       const phone = document.getElementById('customer-phone').value;
+      const email = document.getElementById('customer-email').value;
       const address = document.getElementById('customer-address').value;
+      const paymentMethod = document.getElementById('payment-method').value;
+      const specialInstructions = document.getElementById('special-instructions').value;
       const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const delivery = total > 1000 ? 0 : 50;
       
       // Create order
       const order = {
         id: 'ORD' + Date.now(),
         customerName: name,
         phone: phone,
+        email: email,
         address: address,
         items: [...cart],
-        total: total,
+        total: total + delivery,
         status: 'Pending',
-        date: new Date().toISOString()
+        date: new Date().toISOString(),
+        paymentMethod: paymentMethod,
+        specialInstructions: specialInstructions
       };
       
       orders.push(order);
       
       // Add customer if new
       if (!customers.find(c => c.phone === phone)) {
-        customers.push({ name, phone, email: '', orderCount: 1 });
+        customers.push({ 
+          name, 
+          phone, 
+          email, 
+          orderCount: 1,
+          joinDate: new Date().toISOString()
+        });
       } else {
         const customer = customers.find(c => c.phone === phone);
         customer.orderCount = (customer.orderCount || 0) + 1;
       }
       
-      alert(`Order placed successfully! 🎉\nOrder ID: ${order.id}\nTotal: ₹${total}`);
+      // Update product stock
+      cart.forEach(item => {
+        const product = products.find(p => p._id === item._id);
+        if (product) {
+          product.stock -= item.quantity;
+        }
+      });
+      
+      showNotification(`Order placed successfully! 🎉 Order ID: ${order.id}`, 'success');
       
       cart = [];
       updateCartDisplay();
+      loadProducts(); // Refresh to show updated stock
       showSection('home');
     });
 
@@ -433,9 +873,16 @@
       const phone = document.getElementById('login-phone').value;
       const password = document.getElementById('login-password').value;
       
-      alert(`Login successful! Welcome back! 👋`);
-      currentUser = { phone };
-      showSection('home');
+      // Find user in customers
+      const user = customers.find(c => c.phone === phone);
+      if (user) {
+        currentUser = user;
+        updateUserInterface();
+        showNotification(`Welcome back, ${user.name}! 👋`, 'success');
+        showSection('home');
+      } else {
+        showNotification('Invalid credentials. Please register first.', 'error');
+      }
     });
 
     document.getElementById('register-form').addEventListener('submit', function(e) {
@@ -443,14 +890,34 @@
       const name = document.getElementById('register-name').value;
       const phone = document.getElementById('register-phone').value;
       const email = document.getElementById('register-email').value;
+      const password = document.getElementById('register-password').value;
+      const confirmPassword = document.getElementById('register-confirm-password').value;
       
-      // Add to customers
-      if (!customers.find(c => c.phone === phone)) {
-        customers.push({ name, phone, email, orderCount: 0 });
+      if (password !== confirmPassword) {
+        showNotification('Passwords do not match!', 'error');
+        return;
       }
       
-      alert(`Account created successfully! Welcome ${name}! 🎉`);
-      currentUser = { name, phone, email };
+      if (customers.find(c => c.phone === phone)) {
+        showNotification('Phone number already registered!', 'error');
+        return;
+      }
+      
+      // Add to customers
+      const newUser = { 
+        name, 
+        phone, 
+        email, 
+        password,
+        orderCount: 0,
+        joinDate: new Date().toISOString(),
+        addresses: []
+      };
+      customers.push(newUser);
+      currentUser = newUser;
+      
+      updateUserInterface();
+      showNotification(`Account created successfully! Welcome ${name}! 🎉`, 'success');
       showSection('home');
     });
 
@@ -463,15 +930,53 @@
         isAdmin = true;
         updateAdminStats();
         showSection('admin-dashboard');
-        alert('Admin login successful! 🔐');
+        showNotification('Admin login successful! 🔐', 'success');
       } else {
-        alert('Invalid admin credentials!');
+        showNotification('Invalid admin credentials!', 'error');
       }
     });
 
     // Initialize
     loadProducts();
     updateCartDisplay();
+    updateUserInterface();
+    
+    // Add some demo data
+    setTimeout(() => {
+      // Add demo customers
+      customers.push(
+        { name: 'John Doe', phone: '9876543210', email: 'john@example.com', orderCount: 2, joinDate: '2024-01-15' },
+        { name: 'Jane Smith', phone: '9876543211', email: 'jane@example.com', orderCount: 1, joinDate: '2024-02-01' }
+      );
+      
+      // Add demo orders
+      orders.push(
+        {
+          id: 'ORD1704067200000',
+          customerName: 'John Doe',
+          phone: '9876543210',
+          address: '123 Main St, City',
+          items: [{name: 'Hammer', quantity: 2, price: 250}],
+          total: 550,
+          status: 'Delivered',
+          date: '2024-01-15T10:00:00.000Z',
+          paymentMethod: 'cod'
+        },
+        {
+          id: 'ORD1706745600000',
+          customerName: 'Jane Smith',
+          phone: '9876543211',
+          address: '456 Oak Ave, Town',
+          items: [{name: 'Drill Machine', quantity: 1, price: 2500}],
+          total: 2500,
+          status: 'Shipped',
+          date: '2024-02-01T14:30:00.000Z',
+          paymentMethod: 'online'
+        }
+      );
+      
+      updateAdminStats();
+    }, 1000);
   </script>
 </body>
 </html>
