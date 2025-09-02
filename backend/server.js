@@ -187,6 +187,19 @@ app.put('/api/orders/:id/cancel', async (req, res) => {
   }
 });
 
+// Home route
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'Shree Raam Hardware Store API', 
+    status: 'Server is running!',
+    endpoints: {
+      products: '/api/products',
+      categories: '/api/categories',
+      test: '/api/test'
+    }
+  });
+});
+
 // Test route
 app.get('/api/test', (req, res) => {
   res.json({ message: 'Server is working!' });
