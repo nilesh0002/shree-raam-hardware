@@ -156,13 +156,15 @@ ecommerce-admin-panel/
 
 **Super Admin:**
 - Email: `superadmin@platform.com`
-- Password: `admin123`
+- Password: `admin123` (change in production)
 - Access: All merchants and platform management
 
 **Merchant Admin:**
 - Email: `admin@store1.com`
-- Password: `admin123`
+- Password: `admin123` (change in production)
 - Access: Store 1 data only
+
+⚠️ **Important:** Change default passwords before production deployment
 
 ## 🌐 Multi-Tenant Access
 

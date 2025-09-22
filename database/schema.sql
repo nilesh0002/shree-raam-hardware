@@ -9,9 +9,9 @@ CREATE TABLE admins (
 );
 
 -- Sample admin user (password: "admin123")
--- Hash generated with bcrypt rounds=10
+-- Generate hash using: node database/generate-hash.js
 INSERT INTO admins (email, password_hash, role) VALUES 
-('admin@example.com', '$2b$10$rQZ8kHWKtGY5uJQJ5vQJ5eKQJ5vQJ5eKQJ5vQJ5eKQJ5vQJ5eKQJ5e', 'admin');
+('admin@example.com', 'REPLACE_WITH_GENERATED_HASH', 'admin');
 
--- Note: Replace the above hash with actual bcrypt hash of "admin123"
--- You can generate it using: bcrypt.hash('admin123', 10)
+-- Note: Replace REPLACE_WITH_GENERATED_HASH with actual bcrypt hash
+-- Run: node database/generate-hash.js to generate the hash

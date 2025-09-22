@@ -22,14 +22,14 @@ INSERT INTO merchants (name, subdomain, email) VALUES
 ('Store One', 'store1', 'admin@store1.com'),
 ('Store Two', 'store2', 'admin@store2.com');
 
--- Create super admin
+-- Create super admin (generate hash with: node database/generate-hash.js)
 INSERT INTO admins (email, password_hash, role) VALUES 
-('superadmin@platform.com', '$2b$10$rQZ8kHWKtGY5uJQJ5vQJ5eKQJ5vQJ5eKQJ5vQJ5eKQJ5vQJ5eKQJ5e', 'super_admin');
+('superadmin@platform.com', 'REPLACE_WITH_GENERATED_HASH', 'super_admin');
 
--- Create merchant admins
+-- Create merchant admins (generate hash with: node database/generate-hash.js)
 INSERT INTO admins (email, password_hash, role, merchant_id) VALUES 
-('admin@store1.com', '$2b$10$rQZ8kHWKtGY5uJQJ5vQJ5eKQJ5vQJ5eKQJ5vQJ5eKQJ5vQJ5eKQJ5e', 'admin', 1),
-('admin@store2.com', '$2b$10$rQZ8kHWKtGY5uJQJ5vQJ5eKQJ5vQJ5eKQJ5vQJ5eKQJ5vQJ5eKQJ5e', 'admin', 2);
+('admin@store1.com', 'REPLACE_WITH_GENERATED_HASH', 'admin', 1),
+('admin@store2.com', 'REPLACE_WITH_GENERATED_HASH', 'admin', 2);
 
 -- Update existing data with merchant_id (assign to first merchant)
 UPDATE users SET merchant_id = 1 WHERE merchant_id IS NULL;

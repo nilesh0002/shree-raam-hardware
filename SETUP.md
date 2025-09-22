@@ -117,12 +117,14 @@ npm run client  # Frontend only
 **Super Admin:**
 - URL: `http://localhost:3000/admin/login`
 - Email: `superadmin@platform.com`
-- Password: `admin123`
+- Password: `admin123` (CHANGE IN PRODUCTION)
 
 **Merchant Admin:**
 - URL: `http://localhost:3000/admin/login`
 - Email: `admin@store1.com`
-- Password: `admin123`
+- Password: `admin123` (CHANGE IN PRODUCTION)
+
+⚠️ **Security Warning:** These are default development credentials. Always change passwords and use strong credentials in production.
 
 ## Production Deployment
 
