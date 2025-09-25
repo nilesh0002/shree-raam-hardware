@@ -4,10 +4,11 @@
   "description": "Multi-tenant e-commerce admin panel with React frontend and Node.js backend",
   "main": "backend/server.js",
   "scripts": {
+    "start": "cd backend && npm install && node server.js",
+    "build": "cd backend && npm install",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "server": "cd backend && npm run dev",
     "client": "cd frontend && npm start",
-    "build": "cd frontend && npm run build",
     "install-deps": "npm install && cd backend && npm install && cd ../frontend && npm install"
   },
   "keywords": [
